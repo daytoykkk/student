@@ -106,7 +106,7 @@ export default {
 }
 
 .tabel-container thead {
-  background-color: #67a1ff;
+  background-color: #8090b6;
   height: 2em;
 }
 .tabel-container th {

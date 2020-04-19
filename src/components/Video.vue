@@ -1,0 +1,5 @@
+<template>
+    <div>
+        直播间
+    </div>
+</template>

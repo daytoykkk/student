@@ -1,6 +1,6 @@
 <template>
   <div class="course">
-    <div v-for="(course,index) in courses" :key="index">
+    <div v-for="(course,index) in courses" :key="index" @click="toCoursemsg()">
       <img :src="course.url">
       <p>{{course.coursename}}</p>
     </div>
@@ -42,6 +42,11 @@ export default {
         }
       ]
     };
+  },
+  methods:{
+    toCoursemsg(){
+      this.$router.push({path:'/coursemsg'});
+    }
   }
 };
 </script>
@@ -59,5 +64,9 @@ export default {
 .course div img {
   width: 15em;
   height: auto;
+  cursor: pointer;
+}
+p{
+  cursor: pointer;
 }
 </style>

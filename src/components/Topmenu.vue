@@ -21,7 +21,7 @@
           <input type="text" placeholder="搜索感兴趣的课程" />
           <img src="../assets/search.png" alt />
         </div>
-        <p>个人中心</p>
+        <p @click="toHome()">个人中心</p>
         <el-dropdown style="margin-left:2%;">
           <span class="el-dropdown-link" style="display:flex;align-items:center;">
             <img class="dh_tx" src="../assets/tx.jpg" />
@@ -29,7 +29,7 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>消息通知</el-dropdown-item>
-            <el-dropdown-item>个人信息</el-dropdown-item>
+            <el-dropdown-item @click.native="toSelf()">个人信息</el-dropdown-item>
             <el-dropdown-item divided>退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -41,7 +41,14 @@
 
 <script>
 export default {
-  
+  methods:{
+    toHome(){
+      this.$router.push({path:'/'});
+    },
+    toSelf(){
+      this.$router.push({path:'/selfmsg'});
+    }
+  }
   
 }
 </script>

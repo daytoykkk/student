@@ -10,7 +10,7 @@
     <el-container>
       <!--左侧导航-->
       <el-aside>
-        <el-menu default-active="1" class="el-menu-vertical-demo" router>
+        <el-menu default-active="/sche" class="el-menu-vertical-demo" router>
           <el-menu-item index="/sche">
             <i class="el-icon-date"></i>
             <span slot="title">课程表</span>
@@ -54,9 +54,7 @@ export default {
   height: 20em;
   width: 15em;
 }
-.el-main {
-  background-color: antiquewhite;
-}
+
 .el-menu-vertical-demo {
 margin-left: 3em;
 margin-top: 3em;
