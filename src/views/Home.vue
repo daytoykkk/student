@@ -1,88 +1,66 @@
 <template>
-  <div class="home">
-   <div id="daohang">
-      <el-menu class="el-menu-demo" mode="horizontal" style="display:flex; align-items: center; ">
-        <img src="../assets/home.png" style="margin-left:10%;width:3em;height:3em;" />
-        <el-dropdown style="margin-left:2%;">
-          <span class="el-dropdown-link">
-            课程
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>课程1</el-dropdown-item>
-            <el-dropdown-item>课程2</el-dropdown-item>
-            <el-dropdown-item>课程3</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-
-        <p>学校</p>
-
-        <div class="search">
-          <input type="text" placeholder="搜索感兴趣的课程" />
-          <img src="../assets/search.png" alt />
-        </div>
-        <p>个人中心</p>
-        <el-dropdown style="margin-left:2%;">
-          <span class="el-dropdown-link" style="display:flex;align-items:center;">
-            <img class="dh_tx" src="../assets/tx.jpg" />
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>消息通知</el-dropdown-item>
-            <el-dropdown-item>个人信息</el-dropdown-item>
-            <el-dropdown-item divided>退出</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </el-menu>
+  <el-container class="home" direction="vertical">
+    <!--顶部导航和个人信息显示-->
+    <div>
+      <Topmenu></Topmenu>
+      <Showmsg></Showmsg>
     </div>
-    
-  </div>
+
+    <!--页面主体区域-->
+    <el-container>
+      <!--左侧导航-->
+      <el-aside>
+        <el-menu default-active="1" class="el-menu-vertical-demo" router>
+          <el-menu-item index="/sche">
+            <i class="el-icon-date"></i>
+            <span slot="title">课程表</span>
+          </el-menu-item>
+          <el-menu-item index="/course">
+            <i class="el-icon-document"></i>
+            <span slot="title">所有课程</span>
+          </el-menu-item>
+          <el-menu-item index="/homework">
+            <i class="el-icon-notebook-1"></i>
+            <span slot="title">我的作业</span>
+          </el-menu-item>
+          <el-menu-item index="/selfmsg">
+            <i class="el-icon-setting"></i>
+            <span slot="title">个人信息</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <!--右侧显示区域-->
+      <el-main>
+        <router-view></router-view>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 
 <script>
+import Topmenu from "../components/Topmenu";
+import Showmsg from "../components/Showmsg";
+
 export default {
-  name: 'Home',
-  
-}
+  components: {
+    Topmenu,
+    Showmsg
+  }
+};
 </script>
 
 <style scoped>
-#daohang p {
-  font-size: 1.2em;
-  margin-left: 2%;
-  cursor: pointer;
-}
-.search {
-  width: 20em;
-  height: 2.5em;
-  border: 1px solid cornflowerblue;
-  border-radius: 50px;
-  margin-left: 30%;
-  display: flex;
-  align-items: center;
-}
-.search img {
-  width: 2em;
-  height: 2em;
-  cursor: pointer;
-}
-.search input {
-  font-size: 1em;
-  height: 2em;
-  margin-left: 1.5em;
+.el-aside {
+  height: 20em;
   width: 15em;
-  border: none;
-  line-height: 3.2em;
-  color: #666666;
 }
-.el-dropdown-link {
-  cursor: pointer;
-  color: black;
-  font-size: 1.4em;
+.el-main {
+  background-color: antiquewhite;
 }
-.dh_tx {
-  width: 2em;
-  height: 2em;
-  border-radius: 50%;
+.el-menu-vertical-demo {
+margin-left: 3em;
+margin-top: 3em;
+width: 12em;
+
 }
 </style>

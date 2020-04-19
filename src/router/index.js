@@ -1,20 +1,35 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Main from '../views/Main.vue'
-
+import Schedule from '../components/Schedule'
+import Course from '../components/Course'
+import Homework from '../components/Homework'
+import SelfMsg from '../components/SelfMsg'
 Vue.use(VueRouter)
 
   const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/',
-    name: 'Main',
-   component:Main
+    component: Home,
+    redirect:'/sche',
+    children:[
+      {
+        path:'/sche',
+        component:Schedule
+      },
+      {
+        path:'course',
+        component:Course
+      },
+      {
+        path:'homework',
+        component:Homework
+      },
+      {
+        path:'selfmsg',
+        component:SelfMsg
+      }
+    ]
   }
 ]
 
