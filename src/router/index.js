@@ -1,6 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import NotLogin from '../views/NotLogin.vue'
+import TeacherMain from '../components/Teacher/TeacherMain.vue'
+import TeacherCourse from '../components/Teacher/TeacherCourse.vue'
+import Courseware from '../components/Teacher/Courseware.vue'
+import Groupchat from '../components/Teacher/Groupchat.vue'
+import StudentMsg from '../components/Teacher/StudentMsg.vue'
+import TeacherHomework from '../components/Teacher/TeacherHomework.vue'
 import Schedule from '../components/Schedule'
 import Course from '../components/Course'
 import Homework from '../components/Homework'
@@ -18,6 +25,10 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    component: NotLogin
+  },
+  {
+    path: '/home',
     component: Home,
     redirect: '/sche',
     children: [
@@ -76,6 +87,33 @@ const routes = [
   {
     path: '/video',
     component: Video
+  },
+  {
+    path: '/teacher',
+    component: TeacherMain
+  },
+  {
+    path: '/teachercourse',
+    component: TeacherCourse, 
+    redirect: '/studentmsg',
+    children:[
+      {
+        path: '/courseware',
+        component: Courseware
+      },
+      {
+        path: '/groupchat',
+        component: Groupchat
+      },
+      {
+        path: '/studentmsg',
+        component: StudentMsg
+      },
+      {
+        path: '/teacherhk',
+        component: TeacherHomework
+      }
+    ]
   }
 ]
 

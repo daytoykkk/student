@@ -1,7 +1,7 @@
  <template>
   <el-table :data="tableData" style="width: 100%">
     <el-table-column prop="name" label="作业名称" width="180"></el-table-column>
-    <el-table-column prop="style" label="作业形式" width="180"></el-table-column>
+    <el-table-column prop="teacherName" label="指导老师" width="180"></el-table-column>
     <el-table-column prop="ddl" label="截止时间" width="180" sortable></el-table-column>
     <el-table-column
       prop="tag"
@@ -36,28 +36,28 @@ export default {
         {
           ddl: "2020-05-02",
           name: "7.1",
-          style: "电子作业",
+          teacherName: "陈xx",
           tag: "未提交",
           score: ""
         },
         {
           ddl: "2020-05-04",
           name: "7.2",
-          style: "电子作业",
+          teacherName: "王xx",
           tag: "已提交",
           score: "80"
         },
         {
           ddl: "2020-05-01",
           name: "7.3",
-          style: "电子作业",
+          teacherName: "张xx",
           tag: "已提交",
           score: "70"
         },
         {
           ddl: "2020-05-03",
           name: "7.4",
-          style: "电子作业",
+          teacherName: "李xx",
           tag: "未提交",
           score: ""
         }

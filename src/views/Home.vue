@@ -2,7 +2,6 @@
   <el-container class="home" direction="vertical">
     <!--顶部导航和个人信息显示-->
     <div>
-      <Topmenu></Topmenu>
       <Showmsg></Showmsg>
     </div>
 
@@ -38,12 +37,10 @@
 </template>
 
 <script>
-import Topmenu from "../components/Topmenu";
 import Showmsg from "../components/Showmsg";
 
 export default {
   components: {
-    Topmenu,
     Showmsg
   }
 };
@@ -59,6 +56,5 @@ export default {
 margin-left: 3em;
 margin-top: 3em;
 width: 12em;
-
 }
 </style>

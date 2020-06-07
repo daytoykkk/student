@@ -391,7 +391,7 @@ export default {
           alert("登陆成功！");
           localStorage.setItem("isLogin",true);
           localStorage.setItem("txurl","http://111.230.173.74:7001/consumer/showEInvoice/");
-          that.reload();
+          that.reload()
         })
         .catch(error => {
           console.log(error);

@@ -75,7 +75,7 @@
     </el-form-item>
 
     <el-form-item label="学校" prop="school">
-      <el-select @blur="modify('school')" v-model="ruleForm.school" placeholder="请选择学校">
+      <el-select @change="modify('school')" v-model="ruleForm.school" placeholder="请选择学校">
         <el-option label="清华大学" value="清华大学"></el-option>
         <el-option label="北京大学" value="北京大学"></el-option>
         <el-option label="福州大学" value="福州大学"></el-option>
@@ -83,7 +83,7 @@
     </el-form-item>
 
     <el-form-item label="性别" prop="sex">
-      <el-radio-group @focus="modify('sex')" v-model="ruleForm.sex">
+      <el-radio-group @change="modify('sex')" v-model="ruleForm.sex">
         <el-radio label="男"></el-radio>
         <el-radio label="女"></el-radio>
       </el-radio-group>
@@ -133,7 +133,7 @@
           >重新获取</span>
         </el-input>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="modifyEmail('email')">确 定</el-button>
+          <el-button type="primary" @click="modify('email')">确 定</el-button>
         </div>
       </el-dialog>
     </el-form-item>
@@ -168,7 +168,7 @@
           >重新获取</span>
         </el-input>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="modifyNumber('number')">确 定</el-button>
+          <el-button type="primary" @click="modify('number')">确 定</el-button>
         </div>
       </el-dialog>
     </el-form-item>
@@ -299,7 +299,6 @@ export default {
             params: { StudentEmail: this.yzEmail }
           })
           .then(res => {
-            console.log(res);
             if (res.data == true) {
               this.isOnlyEmail = true;
             } else {
@@ -350,39 +349,31 @@ export default {
     }
   },
   mounted() {
-    // this.getMsg();
+    this.getMsg();
   },
   methods: {
     getMsg() {
       //获取个人信息
-      this.$axios
-        .get("/consumer/getStudent", { params: { StudentId: 1 } })
-        .then(res => {
-          let data = res.data;
-          this.ruleForm.name = data.StudentName;
-          this.ruleForm.slogan = data.StudentSign;
-          this.ruleForm.email = data.StudentEmail;
-          this.ruleForm.sex = data.StudentSex;
-          this.yzEmail = data.StudentEmail;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    submitForm(formName) {
-      //提交信息
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    resetForm(formName) {
-      //重置表单
-      this.$refs[formName].resetFields();
+      let isLogin = localStorage.getItem("isLogin");
+      if (isLogin == "true") {
+        this.$axios
+          .get("/consumer/getStudent")
+          .then(res => {
+            let data = res.data;
+            this.ruleForm.name = data.StudentName;
+            this.ruleForm.sign = data.StudentSign;
+            this.ruleForm.email = data.StudentEmail;
+            this.ruleForm.sex = data.StudentSex;
+            this.ruleForm.password = data.StudentPassword;
+            this.ruleForm.number = data.LoginName;
+            this.ruleForm.school = data.StudentSchool;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        return;
+      }
     },
     handleClose() {
       this.dialogVisible = false;
@@ -421,10 +412,20 @@ export default {
       let that = this;
       let form = new FormData();
       if (type == "blob") {
-        this.$refs.cropper.getCropData(data => {
-          let img = window.URL.createObjectURL(data);
+        that.$refs.cropper.getCropData(data => {
+          let arr = data.split(","),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr,
+            length,
+            u8arr = new Uint8Array(n);
+          while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+          }
 
-          form.append("file", data, this.fileName);
+          let img = new File([u8arr], that.fileName, { type: mime });
+
+          form.append("file", img);
           this.$axios
             .post("/consumer/touxiang/", form, {
               contentType: false,
@@ -432,9 +433,9 @@ export default {
               headers: { "Content-Type": "application/x-www-form-urlencoded" }
             })
             .then(res => {
-              console.log(res.data);
-              if (res.data == 1) {
-                localStorage.setItem("tx", res.data); //存头像
+              if (res.data == "OK") {
+                localStorage.setItem("tx", that.options.img); //存头像
+                console.log(that.options.img);
                 //刷新
                 that.$message({
                   type: "success",
@@ -513,21 +514,27 @@ export default {
 
       if (type == "email") {
         form.append("StudentEmail", that.yzEmail);
+        form.append("E", "E");
         msg = "邮箱";
       } else if (type == "password") {
         form.append("LoginPassword", that.yzPassword);
+        form.append("E", "LP");
         msg = "密码";
       } else if (type == "number") {
         form.append("LoginName", that.yzNumber);
+        form.append("E", "LN");
         msg = "学号";
       } else if (type == "school") {
         form.append("StudentSchool", that.ruleForm.school);
+        form.append("E", "S");
         msg = "学校";
       } else if (type == "name") {
         form.append("StudentName", that.ruleForm.name);
+        form.append("E", "N");
         msg = "姓名";
       } else if (type == "sign") {
         form.append("StudentSign", that.ruleForm.sign);
+        form.append("E", "Sign");
         msg = "个签";
       } else if (type == "sex") {
         form.append("SthdentSex", that.ruleForm.sex);
@@ -542,7 +549,7 @@ export default {
         .post("/consumer/XiuStudent/", form, config)
         .then(function(res) {
           that.code = "";
-
+          console.log(res);
           if (type == "email") {
             that.ruleForm.email = that.yzEmail;
             that.yzEmail = "";
@@ -551,7 +558,7 @@ export default {
             that.yzPassword = "";
             that.yzPasswordSec = "";
           } else if (type == "number") {
-            that.ruleForm.number = yz.number;
+            that.ruleForm.number = that.yzNumber;
             that.yzNumber = "";
           }
 
