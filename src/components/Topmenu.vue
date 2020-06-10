@@ -159,6 +159,37 @@
                   </el-form>
                 </div>
               </el-tab-pane>
+              <!--教职工登陆-->
+              <el-tab-pane label="教职工登录" name="fourth">
+                <div class="teacherForm">
+                  <el-form :model="form4" :rules="secondRules" ref="form4">
+                    <el-form-item label="教职工号" prop="number" :label-width="formLabelWidth">
+                      <el-input v-model="form4.number" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
+                      <el-input v-model="form4.password" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="验证码" prop="code" :label-width="formLabelWidth">
+                      <el-input v-model="form4.code" autocomplete="off" style="width:100px;"></el-input>
+                      <img
+                        :src="codeurl"
+                        @click="refreshCode()"
+                        title="看不清点击刷新"
+                        style="width:50px;height:auto;margin-left:10px;cursor:pointer;"
+                      />
+                    </el-form-item>
+                    <el-form-item>
+                      <center>
+                        <el-button class="loginel" type="primary" @click="loginTeacher()">登 陆</el-button>
+                      </center>
+                    </el-form-item>
+                    <hr class="divide" />
+                    <el-checkbox class="chbox" v-model="checked">七天内免密登陆</el-checkbox>
+                    <span>|</span>
+                    <span class="forgetpass">忘记密码</span>
+                  </el-form>
+                </div>
+              </el-tab-pane>
             </el-tabs>
           </el-dialog>
         </div>
@@ -200,7 +231,7 @@ export default {
       isLogin: false,
       checked: false,
       codeurl: "http://111.230.173.74:7001/consumer/CheckCodeServlet",
-      txurl:"",
+      txurl: "",
       activeName: "second",
       dialogFormVisible: false,
       form1: {
@@ -220,7 +251,12 @@ export default {
         name: "",
         email: "",
         password: "",
-        code:""
+        code: ""
+      },
+      form4: {
+        number: "",
+        password: "",
+        code: ""
       },
       formLabelWidth: "100px",
       thirdRules: {
@@ -241,13 +277,19 @@ export default {
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
         code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
       },
-      secondRules:{
-        number:[{ required: true,trigger:"blur"}],
-         school: [{ required: true, trigger: "blur" }],
-          password: [{ required: true, message: "请输入密码", trigger: "blur" },
-          { pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,30}$/, message: '密码为数字，小写字母，大写字母，特殊符号 至少包含三种，至少8位' }],
+      secondRules: {
+        number: [{ required: true, trigger: "blur" }],
+        school: [{ required: true, trigger: "blur" }],
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          {
+            pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,30}$/,
+            message:
+              "密码为数字，小写字母，大写字母，特殊符号 至少包含三种，至少8位"
+          }
+        ],
         code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
-         email: [
+        email: [
           { required: true, message: "请输入邮箱地址", trigger: "blur" },
           {
             type: "email",
@@ -267,7 +309,7 @@ export default {
       }
     }
   },
-  mounted(){
+  mounted() {
     this.getLogin();
   },
   methods: {
@@ -279,25 +321,28 @@ export default {
       //到个人信息设置页
       this.$router.push({ path: "/selfmsg" });
     },
-    getLogin() {      //加载是否登陆状态
-    if(localStorage.getItem("isLogin")=="true"){
-      this.isLogin=true;
-      this.txurl=localStorage.getItem("txurl");
-    }else{
-      this.isLogin=false;
-    }  
-    console.log(this.isLogin);
+    getLogin() {
+      //加载是否登陆状态
+      if (localStorage.getItem("isLogin") == "true") {
+        this.isLogin = true;
+        this.txurl = localStorage.getItem("txurl");
+      } else {
+        this.isLogin = false;
+      }
+      console.log(this.isLogin);
     },
-    tuichu(){
+    tuichu() {
       localStorage.removeItem("isLogin");
+      localStorage.removeItem("LoginJob");
       this.reload();
     },
-    sendEmail(email) {    //发送邮箱验证码
+    sendEmail(email) {
+      //发送邮箱验证码
       let that = this;
-      if(email==""){
+      if (email == "") {
         this.$message({
-          message:"邮箱不能为空",
-          type:"error"
+          message: "邮箱不能为空",
+          type: "error"
         });
         return false;
       }
@@ -338,7 +383,7 @@ export default {
           form3.append("StudentEmail", that.form3.email);
           form3.append("LoginName", that.form3.number);
           form3.append("LoginPassword", that.form3.password);
-          form3.append("StudentName",that.form3.name);
+          form3.append("StudentName", that.form3.name);
           form3.append("Code", that.form3.code);
           let config = {
             headers: { "Content-Type": "application/x-www-form-urlencoded" }
@@ -361,12 +406,14 @@ export default {
         }
       });
     },
-    refreshCode() {   //登陆刷新验证码
+    refreshCode() {
+      //登陆刷新验证码
       this.codeurl =
         "http://111.230.173.74:7001/consumer/CheckCodeServlet?time" +
         new Date().getTime();
     },
-    loginNum() {    //学号登陆
+    loginNum() {
+      //学号登陆
       let that = this;
       let form = new FormData();
 
@@ -379,7 +426,7 @@ export default {
       form.append("LoginName", that.form2.number);
       form.append("LoginPassword", that.form2.password);
       form.append("Code", that.form2.code);
-      form.append("E","no");
+      form.append("E", "no");
       let config = {
         headers: { "Content-Type": "application/x-www-form-urlencoded" }
       };
@@ -387,17 +434,34 @@ export default {
       this.$axios
         .post("/consumer/LoginStudent/", form, config)
         .then(res => {
-          console.log(res);
-          alert("登陆成功！");
-          localStorage.setItem("isLogin",true);
-          localStorage.setItem("txurl","http://111.230.173.74:7001/consumer/showEInvoice/");
-          that.reload()
+          if (res.data == "OK") {
+            that.$message({
+              type: "success",
+              message: "登陆成功"
+            });
+            localStorage.setItem("isLogin", true);
+            localStorage.setItem(
+              "txurl",
+              "http://111.230.173.74:7001/consumer/showEInvoice/"
+            );
+            localStorage.setItem("LoginJob", "S");
+            that.dialogFormVisible = false;
+            this.$router.push({ path: "/home" });
+            that.getLogin();
+          } else {
+            console.log(res);
+            that.$message({
+              type: "error",
+              message: "登陆失败"
+            });
+          }
         })
         .catch(error => {
           console.log(error);
         });
     },
-    loginEmail() {      //邮箱登录
+    loginEmail() {
+      //邮箱登录
       let that = this;
       let form = new FormData();
 
@@ -410,7 +474,7 @@ export default {
       form.append("LoginName", that.form1.email);
       form.append("LoginPassword", that.form1.password);
       form.append("Code", that.form1.code);
-      form.append("E","yes");
+      form.append("E", "yes");
       let config = {
         headers: { "Content-Type": "application/x-www-form-urlencoded" }
       };
@@ -418,12 +482,76 @@ export default {
       this.$axios
         .post("/consumer/LoginStudent/", form, config)
         .then(res => {
-          alert("登陆成功！");
-          console.log(res);
-          that.isLogin = true;
-          localStorage.setItem("isLogin",true);
-          localStorage.setItem("txurl","http://111.230.173.74:7001/consumer/showEInvoice/");
-          that.reload();
+          if (res.data == "OK") {
+            that.$message({
+              type: "success",
+              message: "登陆成功"
+            });
+            that.isLogin = true;
+            localStorage.setItem("isLogin", true);
+            localStorage.setItem(
+              "txurl",
+              "http://111.230.173.74:7001/consumer/showEInvoice/"
+            );
+            localStorage.setItem("LoginJob", "S");
+            that.dialogFormVisible = false;
+            this.$router.push({ path: "/home" });
+            that.getLogin();
+          } else {
+            console.log(res);
+            that.$message({
+              type: "error",
+              message: "登陆失败"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    loginTeacher() {
+      //教职工登录
+      let that = this;
+      let form = new FormData();
+
+      if (that.checked == true) {
+        form.append("isAutoLogin", "yes");
+      } else {
+        form.append("isAutoLogin", "no");
+      }
+
+      form.append("LoginName", that.form4.number);
+      form.append("LoginPassword", that.form4.password);
+      form.append("Code", that.form4.code);
+      let config = {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+      };
+
+      this.$axios
+        .post("/consumer/LoginTeacher/", form, config)
+        .then(res => {
+          if (res.data == "OK") {
+            that.$message({
+              type: "success",
+              message: "登陆成功"
+            });
+            that.isLogin = true;
+            localStorage.setItem("isLogin", true);
+            localStorage.setItem(
+              "txurl",
+              "http://111.230.173.74:7001/consumer/showEInvoiceT/"
+            );
+            localStorage.setItem("LoginJob", "T");
+            that.dialogFormVisible = false;
+            this.$router.push({ path: "/teacher" });
+            that.getLogin();
+          } else {
+            console.log(res);
+            that.$message({
+              type: "error",
+              message: "登陆失败"
+            });
+          }
         })
         .catch(error => {
           console.log(error);
