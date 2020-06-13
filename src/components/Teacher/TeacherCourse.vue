@@ -21,6 +21,10 @@
             <i class="el-icon-setting"></i>
             <span slot="title">课程资料</span>
           </el-menu-item>
+          <el-menu-item index="/allcourse">
+            <i class="el-icon-setting"></i>
+            <span slot="title">返回</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
 
@@ -43,7 +47,7 @@ export default {
 
 <style scoped>
 .el-aside {
-  height: 20em;
+  height: 25em;
   width: 15em;
 }
 

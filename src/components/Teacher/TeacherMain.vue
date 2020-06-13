@@ -6,19 +6,13 @@
       </div>
       <div class="msg">
         <h1>{{username}}</h1>
-        <p>
+        <p style="cursor:pointer" @click="toTacherMsg()">
           {{slogan}}
           <i style="cursor:pointer;" class="el-icon-edit"></i>
         </p>
       </div>
     </div>
-
-    <div class="allClass">
-        <div v-for="(course,index) in courses" :key="index" @click="toCoursemsg()">
-      <img :src="course.url">
-      <p>{{course.coursename}}</p>
-    </div>
-    </div>
+      <router-view></router-view>
     </div>
 </template>
 
@@ -26,45 +20,32 @@
 export default {
   data() {
     return {
-      tx_url: require("../../assets/tx.jpg"),
+      tx_url: "",
       username: "平平无奇的老师",
-      slogan: "个人签名",
-      courses: [
-        {
-          coursename: "高等数学",
-          url: require("../../assets/1.jpg")
-        },
-        {
-          coursename: "大学物理",
-           url: require("../../assets/1.jpg")
-        },
-        {
-          coursename: "军事理论",
-           url: require("../../assets/1.jpg")
-        },
-        {
-          coursename: "大学英语",
-           url: require("../../assets/1.jpg")
-        },
-        {
-          coursename: "数字电路与逻辑设计",
-           url: require("../../assets/1.jpg")
-        },
-        {
-          coursename: "高级语言程序设计",
-           url: require("../../assets/1.jpg")
-        },
-        {
-          coursename: "中国近现代史纲要",
-           url: require("../../assets/1.jpg")
-        }
-      ]
+      slogan: "个人信息修改"
     };
   },
-   methods:{
-    toCoursemsg(){
-      this.$router.push({path:'/teachercourse'});
+  methods:{
+    toTacherMsg(){
+      this.$router.push({path:"/teachermsg"})
     }
+  },
+  created:function(){
+    let isLogin = localStorage.getItem("isLogin");
+      if (isLogin == "true") {
+        this.$axios
+          .get("/consumer/getTeacher")
+          .then(res => {
+            let data = res.data;
+            this.tx_url = "http://111.230.173.74:7001/consumer/showEInvoiceT/";
+            this.username=data.TeacherName;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        return;
+      }
   }
 };
 </script>
@@ -95,22 +76,5 @@ export default {
   margin-top: 1em;
   margin-left: 3em;
   color: hsla(0, 0%, 100%, 0.863);
-}
-.allClass{
-    display: flex;
-    flex-wrap: wrap;
-}
-.allClass div {
-  width: 15em;
-  margin-left: 3em;
-  text-align: center;
-}
-.allClass div img {
-  width: 15em;
-  height: auto;
-  cursor: pointer;
-}
-p{
-  cursor: pointer;
 }
 </style>

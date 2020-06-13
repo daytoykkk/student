@@ -319,7 +319,16 @@ export default {
     },
     toSelf() {
       //到个人信息设置页
-      this.$router.push({ path: "/selfmsg" });
+      if(localStorage.getItem("LoginJob")=="S"){
+      this.$router.push({ path: "/selfmsg" })  
+      }else if(localStorage.getItem("LoginJob")=="T"){
+        this.$router.push({path:"/teachermsg"})
+      }else{
+        this.$message({
+          type:'warning',
+          message:'请先登录！'
+        })
+      }
     },
     getLogin() {
       //加载是否登陆状态
@@ -334,7 +343,9 @@ export default {
     tuichu() {
       localStorage.removeItem("isLogin");
       localStorage.removeItem("LoginJob");
-      this.reload();
+      localStorage.removeItem("txurl");
+      this.txurl="";
+      this.$router.push({path:"/"})
     },
     sendEmail(email) {
       //发送邮箱验证码

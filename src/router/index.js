@@ -6,6 +6,9 @@ import TeacherMain from '../components/Teacher/TeacherMain.vue'
 import TeacherCourse from '../components/Teacher/TeacherCourse.vue'
 import Courseware from '../components/Teacher/Courseware.vue'
 import Groupchat from '../components/Teacher/Groupchat.vue'
+import AllCourse from '../components/Teacher/AllCourse.vue'
+import TeacherMsg from '../components/Teacher/TeacherMsg.vue'
+import NewHomeWork from '../components/Teacher/NewHomeWork.vue'
 import StudentMsg from '../components/Teacher/StudentMsg.vue'
 import TeacherHomework from '../components/Teacher/TeacherHomework.vue'
 import Schedule from '../components/Schedule'
@@ -90,7 +93,18 @@ const routes = [
   },
   {
     path: '/teacher',
-    component: TeacherMain
+    component: TeacherMain,
+    redirect: '/allcourse',
+    children:[
+      {
+        path:'/teachermsg',
+        component:TeacherMsg
+      },
+      {
+        path:'/allcourse',
+        component:AllCourse
+      }
+    ]
   },
   {
     path: '/teachercourse',
@@ -114,7 +128,11 @@ const routes = [
         component: TeacherHomework
       }
     ]
-  }
+  },
+  {
+    path: '/newhomework',
+    component: NewHomeWork
+  },
 ]
 
 const router = new VueRouter({

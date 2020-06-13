@@ -105,7 +105,7 @@
 
     <el-form-item prop="email" label="邮箱">
       <el-input v-model="ruleForm.email" :disabled="true"></el-input>
-      <el-button type="text" @click="dialogFormVisible = true;" style="margin-left:1em;">点击修改</el-button>
+      <el-button type="text" @click="dialogFormVisible = true;refreshCode();" style="margin-left:1em;">点击修改</el-button>
       <el-dialog title="修改邮箱" :visible.sync="dialogFormVisible">
         <label for="yz-email" style="margin-left:1em;">邮箱</label>
         <el-input id="yz-email" v-model="yzEmail" style="margin-left:1em;"></el-input>
@@ -140,7 +140,7 @@
 
     <el-form-item prop="number" label="学号">
       <el-input v-model="ruleForm.number" :disabled="true"></el-input>
-      <el-button type="text" @click="dialogFormVisible1 = true;" style="margin-left:1em;">点击修改</el-button>
+      <el-button type="text" @click="dialogFormVisible1 = true;refreshCode();" style="margin-left:1em;">点击修改</el-button>
       <el-dialog title="修改学号" :visible.sync="dialogFormVisible1">
         <label for="yz-number" style="margin-left:1em;">学号</label>
         <el-input id="yz-number" v-model="yzNumber" style="margin-left:1em;"></el-input>
@@ -175,7 +175,7 @@
 
     <el-form-item prop="password" label="密码">
       <el-input v-model="ruleForm.password" show-password :disabled="true"></el-input>
-      <el-button type="text" @click="dialogFormVisible2 = true;" style="margin-left:1em;">点击修改</el-button>
+      <el-button type="text" @click="dialogFormVisible2 = true;refreshCode();" style="margin-left:1em;">点击修改</el-button>
       <el-dialog title="修改密码" :visible.sync="dialogFormVisible2">
         <label for="yz-password" style="margin-left:3em;">密码</label>
         <el-input id="yz-password" v-model="yzPassword" show-password style="margin-left:1em;"></el-input>

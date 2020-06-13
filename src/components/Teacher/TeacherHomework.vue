@@ -9,7 +9,7 @@
         <el-button size="mini" @click="toHomeWork()">查看详情</el-button>
     </el-table-column>
     </el-table>
-    <el-button type="warning" plain style="margin-top:20px;margin-left:38%" @click="posthk()">发布作业</el-button>
+    <el-button type="warning" plain style="margin-top:20px;margin-left:38%;cursor:pointer;" @click="posthk()">发布作业</el-button>
   </div>
 </template>
 
@@ -46,6 +46,11 @@ export default {
                 ddl:'2020-05-13',
                 finishNumber:'45'
             }]
+        }
+    },
+    methods:{
+        posthk(){
+           this.$router.push({path:"/newhomework"})
         }
     }
 }
