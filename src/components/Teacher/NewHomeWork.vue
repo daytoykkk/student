@@ -82,9 +82,6 @@
   text-align: center;
   margin-top: 4em;
 }
-</style>
-
-<style>
 .el-input {
   border: 2px solid hsl(138, 11%, 64%);
   border-radius: 5px;
@@ -95,6 +92,7 @@
   box-shadow: 0 3px 8px 0 rgba(129, 189, 239, 0.541);
 }
 </style>
+
 
 <script>
 export default {

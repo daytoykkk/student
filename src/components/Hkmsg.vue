@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Topmenu></Topmenu>
     <!--作业详情-->
     <el-card class="box-card">
       <div slot="header" class="clearfix main-title">
@@ -30,8 +29,6 @@
 </template>
 
 <script>
-import Topmenu from "./Topmenu";
-
 export default {
   data() {
     return {
@@ -40,9 +37,6 @@ export default {
         "防疫思政直播课作业二：请同学们谈谈观后感，特别是结合第一题，谈一下自己还能做些什么？",
       ddl: "2020-4-19"
     };
-  },
-  components: {
-    Topmenu
   },
   mounted() {
     this.getIsSubmit();

@@ -51,6 +51,9 @@ export default {
     methods:{
         posthk(){
            this.$router.push({path:"/newhomework"})
+        },
+        toHomeWork(){
+            this.$router.push({path:"/teacherhkmsg"})
         }
     }
 }

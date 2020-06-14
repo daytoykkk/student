@@ -8,6 +8,7 @@ import Courseware from '../components/Teacher/Courseware.vue'
 import Groupchat from '../components/Teacher/Groupchat.vue'
 import AllCourse from '../components/Teacher/AllCourse.vue'
 import TeacherMsg from '../components/Teacher/TeacherMsg.vue'
+import HkMsgT from '../components/Teacher/HkMsgT.vue'
 import NewHomeWork from '../components/Teacher/NewHomeWork.vue'
 import StudentMsg from '../components/Teacher/StudentMsg.vue'
 import TeacherHomework from '../components/Teacher/TeacherHomework.vue'
@@ -132,6 +133,10 @@ const routes = [
   {
     path: '/newhomework',
     component: NewHomeWork
+  },
+  {
+    path: '/teacherhkmsg',
+    component: HkMsgT
   },
 ]
 
