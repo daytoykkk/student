@@ -102,7 +102,9 @@ export default {
       date: "",
       text: "",
       string: "1",
-      files: []
+      files: [],
+      courseName:"高等数学",
+      teacherName:"dalao"
     };
   },
   methods: {
@@ -119,8 +121,38 @@ export default {
     },
     sendHk() {
       let form = new FormData();
-      console.log("发布" + this.files);
-      //form.append('',this.files);
+      let that = this;
+     form.append("time",that.date);
+     form.append("TeacherName",that.teacherName);
+     form.append("HomeWorkName",that.title);
+     form.append("HomeWorkK",that.courseName);
+    let config = {
+            headers: { "Content-Type": "application/x-www-form-urlencoded" }
+          };
+
+          this.$axios
+            .post("/consumer/UpLoad/",form, config)
+            .then(res=>{
+              console.log(res.data)
+            })
+            .catch(error=>{
+              console.log(error)
+            })
+
+        let hk = new FormData();
+        hk.append("file",that.files);
+        this.$axios
+            .post("/consumer/touxiang/", hk, {
+              contentType: false,
+              processData: false,
+              headers: { "Content-Type": "application/x-www-form-urlencoded" }
+            })
+            .then(res=>{
+              console.log(res.data);
+            })
+            .catch(error=>{
+              console.log(error);
+            })
     }
   }
 };
