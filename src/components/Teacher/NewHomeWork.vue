@@ -103,56 +103,101 @@ export default {
       text: "",
       string: "1",
       files: [],
-      courseName:"高等数学",
-      teacherName:"dalao"
+      courseName: "高等数学",
+      response: ""
     };
   },
   methods: {
     back() {
       this.$router.push({ path: "/teachercourse" });
     },
-    fileChange(file,fileList) {
-        let that=this;
-      this.files=new Array();
-      let n=fileList.length;
-      for(let i=0;i<n;i++){
-          that.files.push(fileList[i])
+    fileChange(file, fileList) {
+      let that = this;
+      this.files = new Array();
+      let n = fileList.length;
+      for (let i = 0; i < n; i++) {
+        that.files.push(fileList[i]);
       }
     },
     sendHk() {
       let form = new FormData();
       let that = this;
-     form.append("time",that.date);
-     form.append("TeacherName",that.teacherName);
-     form.append("HomeWorkName",that.title);
-     form.append("HomeWorkK",that.courseName);
-    let config = {
-            headers: { "Content-Type": "application/x-www-form-urlencoded" }
-          };
 
-          this.$axios
-            .post("/consumer/UpLoad/",form, config)
-            .then(res=>{
-              console.log(res.data)
-            })
-            .catch(error=>{
-              console.log(error)
-            })
+      form.append("time", that.date);
+      form.append("PL", that.title);
+      form.append("PK", that.courseName);
+      form.append("Pneiron", that.text);
 
-        let hk = new FormData();
-        hk.append("file",that.files);
-        this.$axios
-            .post("/consumer/touxiang/", hk, {
-              contentType: false,
-              processData: false,
-              headers: { "Content-Type": "application/x-www-form-urlencoded" }
-            })
-            .then(res=>{
-              console.log(res.data);
-            })
-            .catch(error=>{
-              console.log(error);
-            })
+      if (that.files.length == 1) {
+        form.append("PI", that.files[0].name);
+      } else {
+        let len = that.files.length;
+        let name = "";
+        for (let i = 0; i < len; i++) {
+          name += that.files[i].name + ";";
+        }
+        form.append("PI", name);
+      }
+
+      let config = {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+      };
+
+     this.$axios
+        .post("/consumer/FHomeWork/", form, config)
+        .then(res => {
+          console.log(res.data);
+          that.response += res.data;
+           if (that.response == "OKOK") {
+            that.$message({
+              type: "success",
+              message: "发布成功！"
+            });
+            that.$router.push({ path: "/teacherhkmsg" });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          that.$message({
+            type: "error",
+            message: "发布失败，请重试！"
+          });
+        });
+
+      
+      let config1 = {
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+      let form1 = new FormData();
+      if (that.files.length == 1) {
+        form1.append("file", that.files[0].raw);
+      } else {
+        let len = that.files.length;
+        for (let i = 0; i < len; i++) {
+          form1.append("file", that.files[i].raw);
+        }
+      }
+
+      this.$axios
+        .post("/consumer/UpLoadFile/", form1, config1)
+        .then(res => {
+          console.log(res.data);
+          that.response += res.data;
+          if (that.response == "OKOK") {
+            that.$message({
+              type: "success",
+              message: "发布成功！"
+            });
+            that.$router.push({ path: "/teacherhkmsg" });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          that.$message({
+            type: "error",
+            message: "发布失败，请重试！"
+          });
+        });
     }
   }
 };

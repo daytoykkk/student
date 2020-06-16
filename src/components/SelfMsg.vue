@@ -424,13 +424,14 @@ export default {
           }
 
           let img = new File([u8arr], that.fileName, { type: mime });
-
-          form.append("file", img);
+            console.log(img)
+          form.append("file", img,img.name);
+          console.log(form.get("file"))
           this.$axios
             .post("/consumer/touxiang/", form, {
               contentType: false,
               processData: false,
-              headers: { "Content-Type": "application/x-www-form-urlencoded" }
+              headers: { "Content-Type": "multipart/form-data" }
             })
             .then(res => {
               if (res.data == "OK") {

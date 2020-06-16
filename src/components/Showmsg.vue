@@ -3,7 +3,7 @@
     <!--个人信息展示-->
     <div class="main">
       <div class="tx">
-        <img :src="tx_url" />
+        <img :src="txurl" />
       </div>
       <div class="msg">
         <h1>{{username}}</h1>
@@ -35,13 +35,21 @@
 export default {
   data() {
     return {
-      tx_url: require("../assets/tx.jpg"),
       username: "daytoy",
       slogan: "个人签名",
       fans: 0,
       follows: 0,
-      classid:"XX专业_X班"
+      classid:"XX专业_X班",
+      txurl:""
     };
+  },
+  mounted(){
+      this.getMsg();
+  },
+  methods:{
+    getMsg(){
+      this.txurl=localStorage.getItem("txurl");
+    }
   }
 };
 </script>

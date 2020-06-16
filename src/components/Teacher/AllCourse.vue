@@ -5,6 +5,7 @@
       <img :src="course.url">
       <p>{{course.coursename}}</p>
     </div>
+     <el-button plain style="margin-top:20px;margin-left:38%;cursor:pointer;" @click="getMsg()">查看作业</el-button>
     </div>
     </div>
 </template>
@@ -48,6 +49,23 @@ export default {
    methods:{
     toCoursemsg(){
       this.$router.push({path:'/teachercourse'});
+    },
+     getMsg() {
+      /* let config = {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+      };
+      
+    let form=new FormData();
+    form.append("PK","高等数学")*/
+
+      this.$axios
+        .get("/consumer/FindK/")
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };

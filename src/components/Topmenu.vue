@@ -345,6 +345,7 @@ export default {
       localStorage.removeItem("LoginJob");
       localStorage.removeItem("txurl");
       this.txurl="";
+      this.isLogin=false;
       this.$router.push({path:"/"})
     },
     sendEmail(email) {
