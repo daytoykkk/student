@@ -34,6 +34,7 @@
         上传文件
         <i class="el-icon-folder-opened"></i>
       </p>
+    
       <el-upload
         class="upload-demo"
         :action="string"
@@ -131,19 +132,21 @@ export default {
         });
 
       let config1 = {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+        headers: { "Content-Type": "multipart/form-data;" }
       };
       let form1 = new FormData();
       if (that.files.length == 1) {
-        form1.append("file", that.files[0].raw,that.files[0].raw.name);
+        form1.append("files", that.files[0].raw,that.files[0].raw.name);
       } else {
         let len = that.files.length;
         for (let i = 0; i < len; i++) {
-          form1.append("file", that.files[i].raw,that.files[i].raw.name);
+          form1.append("files", that.files[i].raw,that.files[i].raw.name);
         }
       }
+
+
       this.$axios
-        .post("/consumer/UpLoadFile/", form1,config)
+        .post("/consumer/UpLoadFile/", form1,config1)
         .then(res => {
           console.log(res.data);
           that.response += res.data;

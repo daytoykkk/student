@@ -347,6 +347,7 @@ export default {
       this.txurl="";
       this.isLogin=false;
       this.$router.push({path:"/"})
+      window.location.reload();
     },
     sendEmail(email) {
       //发送邮箱验证码

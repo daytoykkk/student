@@ -6,19 +6,36 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import VueCropper from 'vue-cropper'
+import qs from 'qs'
 
+Vue.prototype.qs=qs;
+Vue.config.productionTip = false;
+Vue.prototype.$axios = axios; 
 
-Vue.config.productionTip = false
+/*axios.defaults.transformRequest = [function(data,config){
+  if(!config['Content-Type'])  return qs.stringfy(data);
+  switch(config['Content-Type'].toLowerCase()){
+    case 'application/json;charset=utf-8':{
+      return JSON.stringify(data);
+    }
+    case 'multipart/form-data;charset=utf-8':{
+      return data;
+    }
+
+    default:{
+      return qs.stringfy(data);
+    }
+  }
+}]*/
 
 axios.defaults.withCredentials = true
 axios.defaults.baseURL="http://111.230.173.74:7001/"
 
 var instance = axios.create({
-  baseURL:'',
+  baseURL:'http://111.230.173.74:7001/',
   timeout:5000,
   headers:{"Content-Type":"multipart/form-data"}
 });
-Vue.prototype.$axios = axios; 
 Vue.prototype.instance=instance;
 
 Vue.use(ElementUI);

@@ -51,17 +51,21 @@ export default {
       this.$router.push({path:'/teachercourse'});
     },
      getMsg() {
-      /* let config = {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" }
-      };
-      
-    let form=new FormData();
-    form.append("PK","高等数学")*/
-
+       let that=this;
       this.$axios
         .get("/consumer/FindK/")
         .then(res => {
           console.log(res.data);
+          let data=new Object();
+           data=res.data.K;
+          let len=data.length;
+          for(let i=0;i<len;i++){
+            let course ={
+              coursename:data[i].kN,
+              url:""
+            }
+            that.courses.push(course);
+          }
         })
         .catch(error => {
           console.log(error);

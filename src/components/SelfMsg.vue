@@ -425,8 +425,8 @@ export default {
 
           let img = new File([u8arr], that.fileName, { type: mime });
             console.log(img)
-          form.append("file", img,img.name);
-          console.log(form.get("file"))
+          form.append("files", img,img.name);
+
           this.$axios
             .post("/consumer/touxiang/", form, {
               contentType: false,
@@ -435,7 +435,7 @@ export default {
             })
             .then(res => {
               if (res.data == "OK") {
-                localStorage.setItem("tx", that.options.img); //存头像
+                localStorage.setItem("txurl", that.options.img); //存头像
                 console.log(that.options.img);
                 //刷新
                 that.$message({

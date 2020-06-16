@@ -23,44 +23,11 @@
 export default {
   data() {
     return {
-      homework: [
-        {
-          title: "7.1",
-          ddl: "2020-05-26",
-          finishNumber: "23"
-        },
-        {
-          title: "7.2",
-          ddl: "2020-05-28",
-          finishNumber: "45"
-        },
-        {
-          title: "7.3",
-          ddl: "2020-05-30",
-          finishNumber: "23"
-        },
-        {
-          title: "7.5",
-          ddl: "2020-06-05",
-          finishNumber: "10"
-        },
-        {
-          title: "6.2",
-          ddl: "2020-04-30",
-          finishNumber: "30"
-        },
-        {
-          title: "7.9",
-          ddl: "2020-04-23",
-          finishNumber: "51"
-        },
-        {
-          title: "5.3",
-          ddl: "2020-05-13",
-          finishNumber: "45"
-        }
-      ]
+      homework: []
     };
+  },
+  mounted() {
+    this.getMsg();
   },
   methods: {
     posthk() {
@@ -70,16 +37,38 @@ export default {
       this.$router.push({ path: "/teacherhkmsg" });
     },
     getMsg() {
-       let config = {
-         headers: { "Content-Type": "application/x-www-form-urlencoded" }
+      let that = this;
+
+      let config = {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
       };
-      
-    let form=new FormData();
-        form.append("PK","高等数学")
+
+      let form = new FormData();
+      form.append("PK", "高等数学");
       this.$axios
-        .post("/consumer/FindHomeWork/", form,config)
+        .post("/consumer/FindHomeWork/", form, config)
         .then(res => {
           console.log(res.data);
+          let data = new Object();
+          data = res.data.H;
+          let len = data.length;
+          for (let i = 0; i < len; i++) {
+            let oldDate = new Date(data[i].pTime);
+            let newDate =
+              oldDate.getFullYear() +
+              "-" +
+              (oldDate.getMonth() + 1) +
+              "-" +
+              oldDate.getDate();
+            let hk = {
+              title: data[i].pL,
+              ddl: newDate,
+              finishNumber: data[i].pT,
+              Id: data[i].pId,
+              courseName: data[i].pK
+            };
+            that.homework.push(hk);
+          }
         })
         .catch(error => {
           console.log(error);

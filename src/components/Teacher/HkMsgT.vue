@@ -20,7 +20,7 @@
       <el-table-column prop="name" label="姓名" width="180"></el-table-column>
       <el-table-column prop="homework" label="作业"></el-table-column>
       <el-table-column prop="score" label="评分">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-input
             size="small"
             v-model="scope.row.score"
