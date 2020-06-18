@@ -442,6 +442,7 @@ export default {
                   type: "success",
                   message: "上传成功"
                 });
+                 window.location.reload();
               }
             })
             .catch(error => {

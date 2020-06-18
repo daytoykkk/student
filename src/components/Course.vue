@@ -1,6 +1,6 @@
 <template>
   <div class="course">
-    <div v-for="(course,index) in courses" :key="index" @click="toCoursemsg()">
+    <div v-for="(course,index) in courses" :key="index" @click="toCoursemsg(course.coursename)">
       <img :src="course.url">
       <p>{{course.coursename}}</p>
     </div>
@@ -11,41 +11,36 @@
 export default {
   data() {
     return {
-      courses: [
-        {
-          coursename: "高等数学",
-          url: require("../assets/1.jpg")
-        },
-        {
-          coursename: "大学物理",
-           url: require("../assets/1.jpg")
-        },
-        {
-          coursename: "军事理论",
-           url: require("../assets/1.jpg")
-        },
-        {
-          coursename: "大学英语",
-           url: require("../assets/1.jpg")
-        },
-        {
-          coursename: "数字电路与逻辑设计",
-           url: require("../assets/1.jpg")
-        },
-        {
-          coursename: "高级语言程序设计",
-           url: require("../assets/1.jpg")
-        },
-        {
-          coursename: "中国近现代史纲要",
-           url: require("../assets/1.jpg")
-        }
-      ]
+      courses: []
     };
   },
+  mounted(){
+      this.getMsg();
+  },
   methods:{
-    toCoursemsg(){
+    toCoursemsg(name){
+      localStorage.setItem("HomeWorkK",name);
       this.$router.push({path:'/coursemsg'});
+    },
+    getMsg(){
+      let that=this;
+      this.$axios("/consumer/getStudentK/")
+      .then(res=>{
+        console.log(res.data);
+        let data=new Object();
+        data=res.data.AllKe;
+        let len=data.length;
+        for(let i=0;i<len;i++){
+          let course={
+            coursename:data[i].kN,
+            url:data[i].kT
+          }
+        that.courses.push(course);
+        }
+      })
+      .catch(error=>{
+        console.log(error)
+      })
     }
   }
 };

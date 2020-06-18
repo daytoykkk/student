@@ -231,7 +231,7 @@ export default {
       isLogin: false,
       checked: false,
       codeurl: "http://111.230.173.74:7001/consumer/CheckCodeServlet",
-      txurl: "",
+      txurl: "http://111.230.173.74:7001/consumer/showEInvoice/",
       activeName: "second",
       dialogFormVisible: false,
       form1: {

@@ -35,12 +35,12 @@
 export default {
   data() {
     return {
-      username: "daytoy",
+      username: "",
       slogan: "个人签名",
       fans: 0,
       follows: 0,
       classid:"XX专业_X班",
-      txurl:""
+      txurl:"http://111.230.173.74:7001/consumer/showEInvoice/"
     };
   },
   mounted(){
@@ -49,6 +49,16 @@ export default {
   methods:{
     getMsg(){
       this.txurl=localStorage.getItem("txurl");
+       this.$axios
+          .get("/consumer/getStudent")
+          .then(res => {
+            let data = res.data;
+            this.username = data.StudentName;
+            this.slogan = data.StudentSign;
+          })
+          .catch(error => {
+            console.log(error);
+          });
     }
   }
 };

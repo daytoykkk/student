@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Topmenu></Topmenu>
     <CourseTop></CourseTop>
 
     <div class="show-box" style="display:flex">
@@ -32,17 +31,40 @@
 </template>
 
 <script>
-import Topmenu from "./Topmenu";
 import CourseTop from "./CourseTop";
 
 export default {
+  data(){
+    return{
+        coursename:""
+    }
+  },
   components: {
-    Topmenu,
     CourseTop
+  },
+  mounted(){
+    this.getMsg();
   },
   methods: {
     toVideo() {
       this.$router.push({ path: "/video" });
+    },
+    getMsg(){
+      let that=this;
+        let coursename=localStorage.getItem("HomeWorkK");
+        let config = {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+      };
+      let form=new FormData();
+      form.append("Ke",coursename);
+       this.$axios
+        .post("/consumer/getStudentKOne/", form, config)
+        .then(res=>{
+          console.log(res.data);
+        })
+        .catch(error=>{
+          console.log(error)
+        })
     }
   }
 };
