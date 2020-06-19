@@ -411,49 +411,31 @@ export default {
       //上传头像
       let that = this;
       let form = new FormData();
-      if (type == "blob") {
-        that.$refs.cropper.getCropData(data => {
-          let arr = data.split(","),
-            mime = arr[0].match(/:(.*?);/)[1],
-            bstr = atob(arr[1]),
-            n = bstr,
-            length,
-            u8arr = new Uint8Array(n);
-          while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
-          }
-
-          let img = new File([u8arr], that.fileName, { type: mime });
-            console.log(img)
-          form.append("files", img,img.name);
-
+        that.$refs.cropper.getCropBlob((data) => {
+          form.append("files", data,that.fileName);
+         
           this.$axios
             .post("/consumer/touxiang/", form, {
-              contentType: false,
-              processData: false,
+              //contentType: false,
+              //processData: false,
               headers: { "Content-Type": "multipart/form-data" }
             })
             .then(res => {
               if (res.data == "OK") {
-                localStorage.setItem("txurl", that.options.img); //存头像
-                console.log(that.options.img);
-                //刷新
+                //显示上传成功并刷新
                 that.$message({
                   type: "success",
                   message: "上传成功"
                 });
-                 window.location.reload();
+               setTimeout(function(){
+                   window.location.reload();
+                },1000)
               }
             })
             .catch(error => {
               console.log(error);
             });
         });
-      } else {
-        this.$refs.cropper.getCropData(data => {
-          console.log(data);
-        });
-      }
     },
     //邮箱验证
     daojishi() {

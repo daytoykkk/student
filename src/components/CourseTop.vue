@@ -61,13 +61,21 @@
 </style>
 
 <script>
+import Msg from "./Msg.js";
 export default {
+  inject: ["reload"],
   data() {
     return {
       src: require("../assets/1.jpg"),
-      name:"高等数学",
-      teachername:"kkk"
+      name:"",
+      teachername:""
     };
+  },
+  mounted(){
+  },
+  methods:{
+    getMsg(){
+    }
   }
 };
 </script>

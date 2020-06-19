@@ -15,6 +15,31 @@
       <div class="text item">{{hkdata}}</div>
     </el-card>
 
+    <!--提交情况-->
+    <el-card class="box-card">
+      <el-table :data="hks" style="width: 100%" empty-text="暂无作业，请及时提交作业">
+        <el-table-column type="index" width="50"></el-table-column>
+        <el-table-column prop="filename" label="提交内容" width="800"></el-table-column>
+        <el-table-column prop="ddl" label="截止时间" width="150" sortable></el-table-column>
+        <el-table-column
+          prop="tag"
+          label="提交状态"
+          width="180"
+          :filters="[{ text: '已提交', value: '已提交' }, { text: '未提交', value: '未提交' }]"
+          :filter-method="filterTag"
+          filter-placement="bottom-end"
+        >
+          <template slot-scope="scope">
+            <el-tag
+              :type="scope.row.tag === '未批改' ? 'danger' : 'success'"
+              style="font-size:1em"
+              disable-transitions
+            >{{scope.row.tag}}</el-tag>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+
     <!--作业答案-->
     <el-card v-if="isSubmit=='已提交'" class="box-card">
       <div slot="header" class="clearfix">
@@ -35,18 +60,57 @@ export default {
       isSubmit: "",
       hkdata:
         "防疫思政直播课作业二：请同学们谈谈观后感，特别是结合第一题，谈一下自己还能做些什么？",
-      ddl: "2020-4-19"
+      ddl: "2020-4-19",
+      hkname:"",
+      hks:[]
     };
   },
   mounted() {
     this.getIsSubmit();
+    this.getMsg();
   },
   methods: {
+    getMsg() {
+      let that = this;
+      let hkname = localStorage.getItem("HomeWorkName");
+      let form = new FormData();
+      form.append("HomeWorKName", hkname);
+      let config = {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+      };
+      this.$axios
+        .post("/consumer/getStudentHomeWork/", form, config)
+        .then(res => {
+          console.log(res.data);
+          let data=new Object();
+          data=res.data.YourHomeWork;
+          let len = data.length;
+          for(let i=0;i<len;i++){
+            let oldDate = new Date(data[i].homeWorkTime);
+            let hk ={
+              tag:data[i].homeWorkP,
+              ddl: oldDate.getFullYear() +
+                "-" +
+                (oldDate.getMonth() + 1) +
+                "-" +
+                oldDate.getDate(),
+                filename:data[i].homeWorkI
+            }
+            that.hks.push(hk)
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     getIsSubmit() {
       this.isSubmit = localStorage.getItem("isSubmit");
     },
-    toSubmithk(){
-        this.$router.push({path:'/submit'});
+     filterTag(value, row) {
+      return row.tag === value;
+    },
+    toSubmithk() {
+      this.$router.push({ path: "/submit" });
     }
   }
 };
@@ -60,8 +124,8 @@ export default {
 .item {
   margin-bottom: 2em;
 }
-.main-title{
-    display: flex;
+.main-title {
+  display: flex;
 }
 .clearfix:before,
 .clearfix:after {
@@ -84,9 +148,9 @@ export default {
   font-size: 0.9em;
   color: #777993;
 }
-.el-button{
-    height: 3.5em;
-    margin-left:75%;
-    margin-top: 1em;
+.el-button {
+  height: 3.5em;
+  margin-left: 75%;
+  margin-top: 1em;
 }
 </style>

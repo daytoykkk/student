@@ -334,7 +334,6 @@ export default {
       //加载是否登陆状态
       if (localStorage.getItem("isLogin") == "true") {
         this.isLogin = true;
-        this.txurl = localStorage.getItem("txurl");
       } else {
         this.isLogin = false;
       }
@@ -453,10 +452,6 @@ export default {
               message: "登陆成功"
             });
             localStorage.setItem("isLogin", true);
-            localStorage.setItem(
-              "txurl",
-              "http://111.230.173.74:7001/consumer/showEInvoice/"
-            );
             localStorage.setItem("LoginJob", "S");
             that.dialogFormVisible = false;
             this.$router.push({ path: "/home" });
@@ -502,10 +497,6 @@ export default {
             });
             that.isLogin = true;
             localStorage.setItem("isLogin", true);
-            localStorage.setItem(
-              "txurl",
-              "http://111.230.173.74:7001/consumer/showEInvoice/"
-            );
             localStorage.setItem("LoginJob", "S");
             that.dialogFormVisible = false;
             this.$router.push({ path: "/home" });
@@ -550,10 +541,7 @@ export default {
             });
             that.isLogin = true;
             localStorage.setItem("isLogin", true);
-            localStorage.setItem(
-              "txurl",
-              "http://111.230.173.74:7001/consumer/showEInvoiceT/"
-            );
+              that.txurl="http://111.230.173.74:7001/consumer/showEInvoiceT/"
             localStorage.setItem("LoginJob", "T");
             that.dialogFormVisible = false;
             this.$router.push({ path: "/teacher" });

@@ -8,8 +8,8 @@
       <div class="msg">
         <h1>{{username}}</h1>
         <p>
+           <i class="el-icon-edit"></i>
           {{slogan}}
-          <i style="cursor:pointer;" class="el-icon-edit"></i>
         </p>
       </div>
       <div class="self_msg">
@@ -48,9 +48,9 @@ export default {
   },
   methods:{
     getMsg(){
-      this.txurl=localStorage.getItem("txurl");
+      //this.txurl=localStorage.getItem("txurl");
        this.$axios
-          .get("/consumer/getStudent")
+          .get("/consumer/getStudent/")
           .then(res => {
             let data = res.data;
             this.username = data.StudentName;
