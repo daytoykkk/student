@@ -28,12 +28,12 @@ export default {
       .then(res=>{
         console.log(res.data);
         let data=new Object();
-        data=res.data.AllKe;
+        data=res.data.AllKe2;
         let len=data.length;
         for(let i=0;i<len;i++){
           let course={
             coursename:data[i].kN,
-            url:data[i].kT
+            url:"http://111.230.173.74:7001/consumer/showEInvoiceP"+"?Name="+data[i].kN+".jpg"
           }
         that.courses.push(course);
         }
@@ -57,7 +57,7 @@ export default {
   text-align: center;
 }
 .course div img {
-  width: 15em;
+  width: 12em;
   height: auto;
   cursor: pointer;
 }

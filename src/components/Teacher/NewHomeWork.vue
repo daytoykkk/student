@@ -170,11 +170,11 @@ export default {
       };
       let form1 = new FormData();
       if (that.files.length == 1) {
-        form1.append("file", that.files[0].raw);
+        form1.append("files", that.files[0].raw);
       } else {
         let len = that.files.length;
         for (let i = 0; i < len; i++) {
-          form1.append("file", that.files[i].raw);
+          form1.append("files", that.files[i].raw);
         }
       }
 

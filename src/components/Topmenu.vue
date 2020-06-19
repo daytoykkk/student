@@ -2,7 +2,7 @@
   <div class="home">
     <div id="daohang">
       <el-menu class="el-menu-demo" mode="horizontal" style="display:flex; align-items: center; ">
-        <img src="../assets/home.png" style="margin-left:10%;width:3em;height:3em;" />
+        <img src="../assets/logo.png" style="margin-left:10%;width:3em;height:3em;" />
         <el-dropdown style="margin-left:2%;">
           <span class="el-dropdown-link">
             课程

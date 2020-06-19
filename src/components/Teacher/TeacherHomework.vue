@@ -8,6 +8,7 @@
       <el-table-column label="操作">
        <template slot-scope="scope">
           <el-button size="mini" @click="toHomeWork(scope.row)">查看详情</el-button>
+          <el-button size="mini" @click="deleteHomeWork(scope.$index)" type="danger">删除</el-button>
        </template>
       </el-table-column>
     </el-table>
@@ -22,6 +23,7 @@
 
 <script>
 export default {
+  inject: ["reload"],
   data() {
     return {
       homework: []
@@ -47,7 +49,7 @@ export default {
       };
 
       let form = new FormData();
-      form.append("PK", "高等数学");
+      form.append("PK", localStorage.getItem("HomeWorkK"));
       this.$axios
         .post("/consumer/FindHomeWork/", form, config)
         .then(res => {
@@ -67,7 +69,8 @@ export default {
               ddl: newDate,
               finishNumber: data[i].pT,
               Id: data[i].pId,
-              courseName: data[i].pK
+              courseName: data[i].pK,
+              homeId:data[i].pId
             };
             that.homework.push(hk);
           }
@@ -75,6 +78,29 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    deleteHomeWork(index){
+      let that=this;
+      let form=new FormData();
+      form.append("PId",this.homework[index].homeId);
+      this.$axios.post('/consumer/DHomeWork/',form,{
+         headers: { "Content-Type": "application/x-www-form-urlencoded" }
+      }).then(res=>{
+        if(res.data=="OK"){
+          that.$message({
+            type:'success',
+            message:"删除作业成功"
+          })
+          that.reload()
+        }
+
+      }).catch(error=>{
+        console.log(error)
+         that.$message({
+            type:'error',
+            message:"删除作业失败"
+          })
+      })
     }
   }
 };

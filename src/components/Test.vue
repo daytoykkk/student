@@ -22,11 +22,10 @@
       <el-table-column prop="score" label="作业评分" width="180"></el-table-column>
       <el-table-column prop="more" label="查看详情">
         <template slot-scope="scope">
-          <el-button @click="toHkmsg(scope.row.name)" type="text" size="small">查看</el-button>
+          <el-button @click="toHkmsg(scope.$index)" type="text" size="small">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-button @click="getMsg()">作业</el-button>
   </div>
 </template>
 
@@ -48,8 +47,8 @@ export default {
     filterTag(value, row) {
       return row.tag === value;
     },
-    toHkmsg(name) {
-      localStorage.setItem("HomeWorkName", name);
+    toHkmsg(index) {
+      localStorage.setItem("hkMsg", JSON.stringify(that.tableData[index]));
       this.$router.push({ path: "/hkmsg" });
     }
   }

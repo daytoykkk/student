@@ -4,7 +4,7 @@
         <el-container>
         <!--左侧菜单-->
         <el-aside>
-        <el-menu default-active="/studentmsg" class="el-menu-vertical-demo" router>
+        <el-menu default-active="/teacherhk" class="el-menu-vertical-demo" router>
           <el-menu-item index="/studentmsg">
             <i class="el-icon-date"></i>
             <span slot="title">学生信息</span>

@@ -21,12 +21,15 @@
       <el-table-column prop="name" label="姓名" width="180"></el-table-column>
       <el-table-column prop="homework" label="作业"></el-table-column>
       <el-table-column prop="time" label="提交时间" width="180"></el-table-column>
+       <el-table-column prop="comment" label="评语">
+         
+       </el-table-column>
       <el-table-column prop="score" label="评分">
         <template slot-scope="scope">
           <el-input
             size="small"
             v-model="scope.row.score"
-            @blur="handleEdit(scope.$index, scope.row.score)"
+            @blur="handleEdit(scope.row.name, scope.row.score,scope.$index,scope.row.comment)"
             style="width:8em;"
           ></el-input>
         </template>
@@ -119,7 +122,8 @@ export default {
               name: data[i].homeWorkT,
               homework: "",
               score: "",
-              isP:data[i].homeWorkP
+              isP:data[i].homeWorkP,
+              comment:data[i].HomePL
             };
             that.tableData.push(hk);
           }
@@ -128,8 +132,29 @@ export default {
           console.log(error);
         })
     },
-    handleEdit(index, row) {
-      console.log(index, row);
+    handleEdit(name, score,index,comment) {
+      let that=this;
+      if(score==""){
+        that.$message({
+          type:"error",
+          message:"分数不能为空噢！"
+        })
+        return 
+      }
+        isP="已批改"
+      let form=new FormData();
+      form.append("HomeWorkP",score);
+      form.append("HomeWorkS",name);
+      form.append("HomePL",comment);
+      this.$axios.post("/consumer/PHomeWorkOne/",form,{
+         headers: { "Content-Type": "multipart/form-data" }
+      }).then(res=>{
+        if(res.data=="OK"){
+          that.tableData[index].isP="已批改"
+        }
+      }).catch(error=>{
+        console.log(error)
+      })
     },
      filterTag(value, row) {
         return row.tag === value;

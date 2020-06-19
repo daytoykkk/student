@@ -72,7 +72,7 @@ export default {
       textarea: "",
       TeacherName: "dalao",
       HomeWorkK: "高等数学",
-      HomeWorkName: "求导",
+      HomeWorkName: "9.1",
       time: "",
       string: "123",
       files: [],

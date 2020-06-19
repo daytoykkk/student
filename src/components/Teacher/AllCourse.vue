@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="allClass">
-        <div v-for="(course,index) in courses" :key="index" @click="toCoursemsg()">
+        <div v-for="(course,index) in courses" :key="index" @click="toCoursemsg(index)">
       <img :src="course.url">
       <p>{{course.coursename}}</p>
     </div>
-     <el-button plain style="margin-top:20px;margin-left:38%;cursor:pointer;" @click="getMsg()">查看作业</el-button>
+    
     </div>
     </div>
 </template>
@@ -14,40 +14,16 @@
 export default {
   data() {
     return {
-      courses: [
-        {
-          coursename: "高等数学",
-          url: require("../../assets/1.jpg")
-        },
-        {
-          coursename: "大学物理",
-           url: require("../../assets/1.jpg")
-        },
-        {
-          coursename: "军事理论",
-           url: require("../../assets/1.jpg")
-        },
-        {
-          coursename: "大学英语",
-           url: require("../../assets/1.jpg")
-        },
-        {
-          coursename: "数字电路与逻辑设计",
-           url: require("../../assets/1.jpg")
-        },
-        {
-          coursename: "高级语言程序设计",
-           url: require("../../assets/1.jpg")
-        },
-        {
-          coursename: "中国近现代史纲要",
-           url: require("../../assets/1.jpg")
-        }
-      ]
+      courses: []
     };
   },
+  mounted(){
+    this.getMsg();
+  },
    methods:{
-    toCoursemsg(){
+    toCoursemsg(index){
+      localStorage.setItem("courseId",this.courses[index].courseId);
+      localStorage.setItem("HomeWorkK",this.courses[index].coursename)
       this.$router.push({path:'/teachercourse'});
     },
      getMsg() {
@@ -62,7 +38,8 @@ export default {
           for(let i=0;i<len;i++){
             let course ={
               coursename:data[i].kN,
-              url:""
+              url:"http://111.230.173.74:7001/consumer/showEInvoiceP"+"?Name="+data[i].kN+".jpg",
+              courseId:data[i].kC
             }
             that.courses.push(course);
           }

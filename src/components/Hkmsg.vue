@@ -10,7 +10,7 @@
             截止时间: {{ddl}}
           </p>
         </div>
-        <el-button type="primary" icon="el-icon-edit" @click="toSubmithk()">提交作业</el-button>
+        <el-button type="primary" icon="el-icon-edit" :disabled="isSubmit" @click="toSubmithk()">提交作业</el-button>
       </div>
       <div class="text item">{{hkdata}}</div>
     </el-card>
@@ -20,7 +20,7 @@
       <el-table :data="hks" style="width: 100%" empty-text="暂无作业，请及时提交作业">
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column prop="filename" label="提交内容" width="800"></el-table-column>
-        <el-table-column prop="ddl" label="截止时间" width="150" sortable></el-table-column>
+        <el-table-column prop="ddl" label="提交时间" width="150"></el-table-column>
         <el-table-column
           prop="tag"
           label="提交状态"
@@ -57,16 +57,14 @@
 export default {
   data() {
     return {
-      isSubmit: "",
-      hkdata:
-        "防疫思政直播课作业二：请同学们谈谈观后感，特别是结合第一题，谈一下自己还能做些什么？",
-      ddl: "2020-4-19",
+      isSubmit: true,
+      hkdata:"",
+      ddl: "",
       hkname:"",
       hks:[]
     };
   },
   mounted() {
-    this.getIsSubmit();
     this.getMsg();
   },
   methods: {
@@ -85,6 +83,10 @@ export default {
           let data=new Object();
           data=res.data.YourHomeWork;
           let len = data.length;
+          if(len==0){
+            that.isSubmit=false;
+            return
+          }
           for(let i=0;i<len;i++){
             let oldDate = new Date(data[i].homeWorkTime);
             let hk ={
@@ -102,9 +104,6 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    },
-    getIsSubmit() {
-      this.isSubmit = localStorage.getItem("isSubmit");
     },
      filterTag(value, row) {
       return row.tag === value;

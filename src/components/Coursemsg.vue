@@ -39,7 +39,7 @@
       <!--右边部分-->
       <div class="right-box">
         <div class="menu">
-          <el-menu default-active="/res" class="el-menu-demo" mode="horizontal" router>
+          <el-menu default-active="/test" class="el-menu-demo" mode="horizontal" router>
             <el-menu-item index="/res">课程资源</el-menu-item>
             <el-menu-item index="/test">作业考试</el-menu-item>
             <el-menu-item index="/video">直播间</el-menu-item>
@@ -87,10 +87,12 @@ export default {
         .then(res => {
           console.log(res.data);
           let data = new Object();
-          data = res.data.Teacher;
+
+          data = res.data.Teacher2;
           that.teachername = data.teacherName;
           that.teacherpic=data.teacherFace;
-          data = res.data.AllHomeWork;
+
+          data = res.data.AllHomeWork2;
           let len = data.length;
           for (let i = 0; i < len; i++) {
             let oldDate = new Date(data[i].pTime);
@@ -110,22 +112,24 @@ export default {
           }
           localStorage.setItem("AllHk",JSON.stringify(that.homeworks))
 
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
-        let form1=new FormData();
+            let form1=new FormData();
         form1.append("Name",that.teacherpic);
         this.$axios("/consumer/showEInvoiceP/",form1,config)
         .then(res=>{
           if(res.data=="OK"){
-            that.teacherPicUrl="http://111.230.173.74:7001/consumer/showEInvoiceT/"+"?Name="+that.teacherpic;
+            that.teacherPicUrl="http://111.230.173.74:7001/consumer/showEInvoiceP"+"?Name="+that.teacherpic;
           }
         })
         .catch(error=>{
           console.log(error)
         })
+
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+      
     }
   }
 };
