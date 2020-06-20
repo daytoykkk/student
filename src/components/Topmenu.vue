@@ -319,9 +319,9 @@ export default {
     },
     toSelf() {
       //到个人信息设置页
-      if(localStorage.getItem("LoginJob")=="S"){
+      if(sessionStorage.getItem("LoginJob")=="S"){
       this.$router.push({ path: "/selfmsg" })  
-      }else if(localStorage.getItem("LoginJob")=="T"){
+      }else if(sessionStorage.getItem("LoginJob")=="T"){
         this.$router.push({path:"/teachermsg"})
       }else{
         this.$message({
@@ -332,17 +332,16 @@ export default {
     },
     getLogin() {
       //加载是否登陆状态
-      if (localStorage.getItem("isLogin") == "true") {
+      if (sessionStorage.getItem("isLogin") == "true") {
         this.isLogin = true;
       } else {
         this.isLogin = false;
       }
-      console.log(this.isLogin);
     },
     tuichu() {
-      localStorage.removeItem("isLogin");
-      localStorage.removeItem("LoginJob");
-      localStorage.removeItem("txurl");
+      sessionStorage.removeItem("isLogin");
+      sessionStorage.removeItem("LoginJob");
+      sessionStorage.removeItem("txurl");
       this.txurl="";
       this.isLogin=false;
       this.$router.push({path:"/"})
@@ -451,8 +450,8 @@ export default {
               type: "success",
               message: "登陆成功"
             });
-            localStorage.setItem("isLogin", true);
-            localStorage.setItem("LoginJob", "S");
+            sessionStorage.setItem("isLogin", true);
+            sessionStorage.setItem("LoginJob", "S");
             that.dialogFormVisible = false;
             this.$router.push({ path: "/home" });
             that.getLogin();
@@ -462,6 +461,7 @@ export default {
               type: "error",
               message: "登陆失败"
             });
+            that.refreshCode()
           }
         })
         .catch(error => {
@@ -496,8 +496,8 @@ export default {
               message: "登陆成功"
             });
             that.isLogin = true;
-            localStorage.setItem("isLogin", true);
-            localStorage.setItem("LoginJob", "S");
+            sessionStorage.setItem("isLogin", true);
+            sessionStorage.setItem("LoginJob", "S");
             that.dialogFormVisible = false;
             this.$router.push({ path: "/home" });
             that.getLogin();
@@ -507,6 +507,7 @@ export default {
               type: "error",
               message: "登陆失败"
             });
+             that.refreshCode()
           }
         })
         .catch(error => {
@@ -540,9 +541,9 @@ export default {
               message: "登陆成功"
             });
             that.isLogin = true;
-            localStorage.setItem("isLogin", true);
+            sessionStorage.setItem("isLogin", true);
               that.txurl="http://111.230.173.74:7001/consumer/showEInvoiceT/"
-            localStorage.setItem("LoginJob", "T");
+           sessionStorage.setItem("LoginJob", "T");
             that.dialogFormVisible = false;
             this.$router.push({ path: "/teacher" });
             that.getLogin();
@@ -552,6 +553,7 @@ export default {
               type: "error",
               message: "登陆失败"
             });
+             that.refreshCode()
           }
         })
         .catch(error => {

@@ -1,19 +1,19 @@
 <template>
-    <div>
-       <div class="main">
+  <div>
+    <div class="main">
       <div class="tx">
         <img :src="tx_url" />
       </div>
       <div class="msg">
         <h1>{{username}}</h1>
-        <p style="cursor:pointer" @click="toTacherMsg()">
+        <p style="cursor:pointer" title="点我修改信息" @click="toTacherMsg()">
           {{slogan}}
           <i style="cursor:pointer;" class="el-icon-edit"></i>
         </p>
       </div>
     </div>
-      <router-view></router-view>
-    </div>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -21,31 +21,31 @@ export default {
   data() {
     return {
       tx_url: "",
-      username: "平平无奇的老师",
+      username: "",
       slogan: "个人信息修改"
     };
   },
-  methods:{
-    toTacherMsg(){
-      this.$router.push({path:"/teachermsg"})
+  methods: {
+    toTacherMsg() {
+      this.$router.push({ path: "/teachermsg" });
     }
   },
-  created:function(){
-    let isLogin = localStorage.getItem("isLogin");
-      if (isLogin == "true") {
-        this.$axios
-          .get("/consumer/getTeacher")
-          .then(res => {
-            let data = res.data;
-            this.tx_url = "http://111.230.173.74:7001/consumer/showEInvoiceT/";
-            this.username=data.TeacherName;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
-        return;
-      }
+  created: function() {
+    let isLogin = sessionStorage.getItem("isLogin");
+    if (isLogin == "true") {
+      this.$axios
+        .get("/consumer/getTeacher")
+        .then(res => {
+          let data = res.data;
+          this.tx_url = "http://111.230.173.74:7001/consumer/showEInvoiceT/";
+          this.username = data.TeacherName;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      return;
+    }
   }
 };
 </script>

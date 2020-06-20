@@ -33,34 +33,6 @@ export default {
   data() {
     return {
       tableData: [
-        {
-          ddl: "2020-05-02",
-          name: "7.1",
-          teacherName: "陈xx",
-          tag: "未提交",
-          score: ""
-        },
-        {
-          ddl: "2020-05-04",
-          name: "7.2",
-          teacherName: "王xx",
-          tag: "已提交",
-          score: "80"
-        },
-        {
-          ddl: "2020-05-01",
-          name: "7.3",
-          teacherName: "张xx",
-          tag: "已提交",
-          score: "70"
-        },
-        {
-          ddl: "2020-05-03",
-          name: "7.4",
-          teacherName: "李xx",
-          tag: "未提交",
-          score: ""
-        }
       ]
     };
   },

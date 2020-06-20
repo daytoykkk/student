@@ -2,7 +2,7 @@
     <div>
         <div class="allClass">
         <div v-for="(course,index) in courses" :key="index" @click="toCoursemsg(index)">
-      <img :src="course.url">
+      <img :src="course.url" >
       <p>{{course.coursename}}</p>
     </div>
     
@@ -63,7 +63,7 @@ export default {
   text-align: center;
 }
 .allClass div img {
-  width: 15em;
+  width: 12em;
   height: auto;
   cursor: pointer;
 }

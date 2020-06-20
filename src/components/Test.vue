@@ -48,6 +48,7 @@ export default {
       return row.tag === value;
     },
     toHkmsg(index) {
+      let that=this;
       localStorage.setItem("hkMsg", JSON.stringify(that.tableData[index]));
       this.$router.push({ path: "/hkmsg" });
     }

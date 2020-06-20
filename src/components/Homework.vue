@@ -25,7 +25,7 @@
             <el-table-column prop="score" label="作业评分" width="180"></el-table-column>
             <el-table-column prop="more" label="查看详情">
               <template slot-scope="scope">
-                <el-button @click="toHkmsg(scope.row.name)" type="text" size="small">查看</el-button>
+                <el-button @click="toHkmsg(scope.$index)" type="text" size="small">查看</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -71,7 +71,6 @@ export default {
               })
               .then(res => {
                 let data = new Object();
-
                 data = res.data.AllHomeWork2;
                 let len = data.length;
                 for (let i = 0; i < len; i++) {
@@ -86,7 +85,8 @@ export default {
                       oldDate.getDate(),
                     tag: data[i].pK,
                     score: data[i].pT,
-                    more: ""
+                    more: "",
+                    comment:data[i].pneiron
                   };
                   that.tableData.push(hk);
                 }
@@ -103,8 +103,14 @@ export default {
     filterTag(value, row) {
       return row.tag === value;
     },
-    toHkmsg(name) {
-      localStorage.setItem("HomeWorkName", name);
+    toHkmsg(index) {
+      let that=this;
+      let hkmsg={
+        name:that.tableData[index].name,
+        ddl:that.tableData[index].ddl,
+        comment:that.tableData[index].comment
+      }
+      localStorage.setItem("hkmsg",JSON.stringify(hkmsg));
       this.$router.push({ path: "/hkmsg" });
     },
     handleClick(tab, event) {

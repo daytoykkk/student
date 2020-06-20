@@ -4,13 +4,18 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix main-title">
         <div class="hk-title">
-          <span>作业详情</span>
+          <span>{{hkname}}</span>
           <p class="p-ddl">
             <i class="el-icon-time"></i>
             截止时间: {{ddl}}
           </p>
         </div>
-        <el-button type="primary" icon="el-icon-edit" :disabled="isSubmit" @click="toSubmithk()">提交作业</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-edit"
+          :disabled="isSubmit"
+          @click="toSubmithk()"
+        >提交作业</el-button>
       </div>
       <div class="text item">{{hkdata}}</div>
     </el-card>
@@ -19,7 +24,7 @@
     <el-card class="box-card">
       <el-table :data="hks" style="width: 100%" empty-text="暂无作业，请及时提交作业">
         <el-table-column type="index" width="50"></el-table-column>
-        <el-table-column prop="filename" label="提交内容" width="800"></el-table-column>
+        <el-table-column prop="filename" label="提交内容" width="500"></el-table-column>
         <el-table-column prop="ddl" label="提交时间" width="150"></el-table-column>
         <el-table-column
           prop="tag"
@@ -37,17 +42,27 @@
             >{{scope.row.tag}}</el-tag>
           </template>
         </el-table-column>
+        
+          <el-table-column prop="downfile" label="我的提交">
+            <template slot-scope="scope">
+            <el-button
+              @click="download(scope.row.filename)"
+              style="margin-left:0"
+              type="text"
+            >点击下载我的作业</el-button> </template>
+          </el-table-column>
+       
       </el-table>
     </el-card>
 
     <!--作业答案-->
-    <el-card v-if="isSubmit=='已提交'" class="box-card">
+    <el-card v-if="isSubmit==true" class="box-card">
       <div slot="header" class="clearfix">
         <span>作业答案</span>
-        <el-button style="float: right; padding: 3px 0" type="text">一键复制</el-button>
+        <el-button style="float: right; padding: 3px 0" type="text">点击下载文件</el-button>
       </div>
       <div>
-        <p>在疫情期间，我们应该要听从党和国家的安排，积极做好个人疫情防控工作；同时也要尽己所能，在疫情期间多多劝说他人不吃野味，不聚众搞宴席，严格听从国家对疫情防控工作的安排。</p>
+        <p>{{filename}}</p>
       </div>
     </el-card>
   </div>
@@ -58,10 +73,11 @@ export default {
   data() {
     return {
       isSubmit: true,
-      hkdata:"",
+      hkdata: "",
       ddl: "",
-      hkname:"",
-      hks:[]
+      hkname: "",
+      hks: [],
+      filename: ""
     };
   },
   mounted() {
@@ -70,9 +86,12 @@ export default {
   methods: {
     getMsg() {
       let that = this;
-      let hkname = localStorage.getItem("HomeWorkName");
+      let homework = JSON.parse(localStorage.getItem("hkmsg"));
+      that.ddl = homework.ddl;
+      that.hkname = homework.name;
+      that.hkdata = homework.comment;
       let form = new FormData();
-      form.append("HomeWorKName", hkname);
+      form.append("HomeWorKName", that.hkname);
       let config = {
         headers: { "Content-Type": "application/x-www-form-urlencoded" }
       };
@@ -80,36 +99,55 @@ export default {
         .post("/consumer/getStudentHomeWork/", form, config)
         .then(res => {
           console.log(res.data);
-          let data=new Object();
-          data=res.data.YourHomeWork;
+          let data = new Object();
+          data = res.data.YourHomeWork;
           let len = data.length;
-          if(len==0){
-            that.isSubmit=false;
-            return
+          if (len == 0) {
+            that.isSubmit = false;
+            return;
+          } else {
+            that.isSubmit = true;
           }
-          for(let i=0;i<len;i++){
+
+          for (let i = 0; i < len; i++) {
             let oldDate = new Date(data[i].homeWorkTime);
-            let hk ={
-              tag:data[i].homeWorkP,
-              ddl: oldDate.getFullYear() +
+            let hk = {
+              tag: data[i].homeWorkP,
+              ddl:
+                oldDate.getFullYear() +
                 "-" +
                 (oldDate.getMonth() + 1) +
                 "-" +
                 oldDate.getDate(),
-                filename:data[i].homeWorkI
-            }
-            that.hks.push(hk)
+              filename: data[i].homeWorkI
+            };
+            that.hks.push(hk);
           }
         })
         .catch(error => {
           console.log(error);
         });
     },
-     filterTag(value, row) {
+    filterTag(value, row) {
       return row.tag === value;
     },
     toSubmithk() {
       this.$router.push({ path: "/submit" });
+    },
+    download(name) {
+      let that = this;
+      let form = new FormData();
+      form.append("fileName", name);
+      that.$axios
+        .post("/consumer/downFile/", form, {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" }
+        })
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };

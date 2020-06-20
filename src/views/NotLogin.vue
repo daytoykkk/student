@@ -1,6 +1,6 @@
 <template>
    <div class="all">
-       <img src="../assets/rabit.png" style="margin-left:5em;margin-top:2em;width:150px;height:310px;">
+       <img src="../assets/rabit.png" style="margin-left:5em;margin-top:2em;width:150px;height:330px;">
         <div class="main">
         登陆以解锁更多信息
         <center>
@@ -18,6 +18,7 @@
 <style scoped>
 .all{
     display: flex;
+    background: url(../assets/bk.png) no-repeat;
 }
 .main{
     width: 20%;
@@ -28,7 +29,8 @@
     border-radius: 20px;
     margin-top: 80px;
     margin-left: 25.5%;
-    box-shadow: 0 2px 12px 0 rgba(100, 110, 245, 0.541)
+    box-shadow: 0 2px 12px 0 rgba(100, 110, 245, 0.541);
+    background:#f5f8f8;
 }
 #logo{
     width: 100px;

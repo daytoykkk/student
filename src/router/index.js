@@ -110,7 +110,7 @@ const routes = [
   {
     path: '/teachercourse',
     component: TeacherCourse, 
-    redirect: '/studentmsg',
+    redirect: '/teacherhk',
     children:[
       {
         path: '/courseware',

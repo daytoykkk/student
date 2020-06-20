@@ -62,7 +62,7 @@ export default {
       teachername: "",
       teacherpic:"",
       teacherPicUrl:"",
-      coursesrc: require("../assets/1.jpg"),
+      coursesrc: "",
       homeworks: []
     };
   },
@@ -92,6 +92,9 @@ export default {
           that.teachername = data.teacherName;
           that.teacherpic=data.teacherFace;
 
+          data=res.data.Ke2;
+          that.coursesrc="http://111.230.173.74:7001/consumer/showEInvoiceP"+"?Name="+data.kN+".jpg";
+
           data = res.data.AllHomeWork2;
           let len = data.length;
           for (let i = 0; i < len; i++) {
@@ -104,8 +107,8 @@ export default {
                 (oldDate.getMonth() + 1) +
                 "-" +
                 oldDate.getDate(),
-                tag:"",
-                score:"",
+                tag:data[i].pK,
+                score:data[i].pT,
                 more:""
             };
             that.homeworks.push(hk);
@@ -143,7 +146,7 @@ export default {
   display: flex;
 }
 .el-image {
-  width: 13em;
+  width: 10em;
   height: auto;
   border-radius: 6%;
   margin-top: 2em;

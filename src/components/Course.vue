@@ -26,7 +26,6 @@ export default {
       let that=this;
       this.$axios("/consumer/getStudentK/")
       .then(res=>{
-        console.log(res.data);
         let data=new Object();
         data=res.data.AllKe2;
         let len=data.length;

@@ -5,7 +5,10 @@
     label-width="100px"
     class="demo-ruleForm"
   >
-    <p style="font-size:1.5em;margin-left:10%;">教师基本信息</p>
+  
+    <p style="font-size:1.5em;margin-left:10%;">
+      <img src="../../assets/back.png" @click="toAllcourse()" style="width:1.2em;padding-right:5px;cursor:pointer;" title="返回主页">
+      教师基本信息</p>
     <el-form-item label="修改头像" style="margin-left:10%;margin-top:40px">
       <el-button @click="dialogVisible=true">上传头像</el-button>
     </el-form-item>
@@ -379,6 +382,9 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    },
+    toAllcourse(){
+      this.$router.push({ path: "/allcourse" });
     }
   }
 };

@@ -25,7 +25,7 @@ export default {
     reload() {
       console.log("加载");
       this.isRouterAlive = false;
-      let job = localStorage.getItem("LoginJob");
+      let job = sessionStorage.getItem("LoginJob");
       if (job == "") {
         this.$router.push({ path: "/" });
       } else if (job == "S") {
@@ -37,7 +37,7 @@ export default {
     }
   },
   created: function() {
-    let job = localStorage.getItem("LoginJob");
+    let job = sessionStorage.getItem("LoginJob");
     if (job == "") {
       this.$router.push({ path: "/" });
     } else if (job == "S") {
