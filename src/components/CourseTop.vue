@@ -1,22 +1,17 @@
 <template>
   <div class="main">
     <!--课程图片-->
-    <div class="block">
-      <el-image :src="src">
-        <div slot="error" class="image-slot">
-          <i class="el-icon-picture-outline"></i>
-        </div>
-      </el-image>
+    <div class="block" style="margin-top:1em">
+     <img :src="src">
     </div>
 
     <div class="title">
       <p style="font-size:1.5em;">{{name}}</p>
-      <p><i class="el-icon-s-custom"></i> 教师：{{teachername}}</p>
     </div>
 
   <div class="class-box">
     <img src="../assets/group.png" style="cursor: pointer;width:2em;height:2em;margin-top:5em;">
-    <p>进入群聊</p>
+    <p @click="toVideo()" style="cursor:pointer">进入群聊</p>
   </div>
 
   </div>
@@ -66,15 +61,22 @@ export default {
   inject: ["reload"],
   data() {
     return {
-      src: require("../assets/1.jpg"),
-      name:"",
-      teachername:""
+      src:"",
+      teachername:"",
+      name:""
     };
   },
   mounted(){
+    this.getMsg();
   },
   methods:{
     getMsg(){
+      let that=this;
+      that.src=localStorage.getItem("courseUrl");
+      that.name=localStorage.getItem("HomeWorkK");
+    },
+    toVideo(){
+       this.$router.push({path:"/video"})
     }
   }
 };

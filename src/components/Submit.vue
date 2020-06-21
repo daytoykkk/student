@@ -4,7 +4,7 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix main-title">
         <div class="hk-title">
-          <span>作业详情</span>
+          <span>{{name}}}</span>
           <p class="p-ddl">
             <i class="el-icon-time"></i>
             截止时间: {{ddl}}
@@ -66,13 +66,11 @@
 export default {
   data() {
     return {
-      hkdata:
-        "防疫思政直播课作业二：请同学们谈谈观后感，特别是结合第一题，谈一下自己还能做些什么？",
-      ddl: "2020-4-19",
+      hkdata:"",
+      ddl: "",
       textarea: "",
-      TeacherName: "dalao",
-      HomeWorkK: "高等数学",
-      HomeWorkName: "9.1",
+      teachername: "",
+      name:"",
       time: "",
       string: "123",
       files: [],
@@ -80,6 +78,13 @@ export default {
     };
   },
   methods: {
+    getMsg(){
+         let homework = JSON.parse(localStorage.getItem("hkmsgS"));
+         this.ddl=homework.ddl;
+         this.name=homework.name;
+         this.hkdata=homework.comment;
+         that.teachername=homework.teachername;
+    },
     fileChange(file, fileList) {
       let that = this;
       this.files = new Array();
@@ -106,7 +111,7 @@ export default {
       }
 
       form.append("time", date);
-      form.append("TeacherName", that.TeacherName);
+      form.append("TeacherName", that.teachername);
       form.append("HomeWorkName", that.HomeWorkName);
       form.append("HomeWorkK", that.HomeWorkK);
       let config = {

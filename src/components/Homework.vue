@@ -70,6 +70,7 @@ export default {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
               })
               .then(res => {
+                console.log(res.data.AllHomeWork2)
                 let data = new Object();
                 data = res.data.AllHomeWork2;
                 let len = data.length;
@@ -86,7 +87,8 @@ export default {
                     tag: data[i].pK,
                     score: data[i].pT,
                     more: "",
-                    comment:data[i].pneiron
+                    comment:data[i].pneiron,
+                    teachername:data[i].teacherName
                   };
                   that.tableData.push(hk);
                 }
@@ -105,12 +107,7 @@ export default {
     },
     toHkmsg(index) {
       let that=this;
-      let hkmsg={
-        name:that.tableData[index].name,
-        ddl:that.tableData[index].ddl,
-        comment:that.tableData[index].comment
-      }
-      localStorage.setItem("hkmsg",JSON.stringify(hkmsg));
+      localStorage.setItem("hkmsgS",JSON.stringify(that.tableData[index]));
       this.$router.push({ path: "/hkmsg" });
     },
     handleClick(tab, event) {

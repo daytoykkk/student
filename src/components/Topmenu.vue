@@ -342,6 +342,7 @@ export default {
       sessionStorage.removeItem("isLogin");
       sessionStorage.removeItem("LoginJob");
       sessionStorage.removeItem("txurl");
+      localStorage.clear();
       this.txurl="";
       this.isLogin=false;
       this.$router.push({path:"/"})

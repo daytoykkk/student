@@ -1,6 +1,13 @@
 <template>
   <div>
     <!--作业详情-->
+     <div>
+       <img
+        src="../assets/back.png"
+        @click="tohk()"
+        style="float:left;margin-left:8%;width:2em;padding-right:5px;cursor:pointer;"
+        title="返回作业列表"
+      />
     <el-card class="box-card">
       <div slot="header" class="clearfix main-title">
         <div class="hk-title">
@@ -19,6 +26,7 @@
       </div>
       <div class="text item">{{hkdata}}</div>
     </el-card>
+     </div>
 
     <!--提交情况-->
     <el-card class="box-card">
@@ -42,16 +50,16 @@
             >{{scope.row.tag}}</el-tag>
           </template>
         </el-table-column>
-        
-          <el-table-column prop="downfile" label="我的提交">
-            <template slot-scope="scope">
+
+        <el-table-column prop="downfile" label="我的提交">
+          <template slot-scope="scope">
             <el-button
               @click="download(scope.row.filename)"
               style="margin-left:0"
               type="text"
-            >点击下载我的作业</el-button> </template>
-          </el-table-column>
-       
+            >点击下载我的作业</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
 
@@ -86,8 +94,11 @@ export default {
   methods: {
     getMsg() {
       let that = this;
-      let homework = JSON.parse(localStorage.getItem("hkmsg"));
+      let homework = JSON.parse(localStorage.getItem("hkmsgS"));
       that.ddl = homework.ddl;
+      let dateline = new Date(that.ddl);
+      let today = new Date();
+
       that.hkname = homework.name;
       that.hkdata = homework.comment;
       let form = new FormData();
@@ -104,6 +115,9 @@ export default {
           let len = data.length;
           if (len == 0) {
             that.isSubmit = false;
+            if (today > dateline) {   //过期不能交
+              that.isSubmit = true;
+            }
             return;
           } else {
             that.isSubmit = true;
@@ -140,14 +154,31 @@ export default {
       form.append("fileName", name);
       that.$axios
         .post("/consumer/downFile/", form, {
-          headers: { "Content-Type": "application/x-www-form-urlencoded" }
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          responseType: 'blob'
         })
-        .then(res => {
-          console.log(res.data);
-        })
+       .then(res=>{
+         console.log(res.data)
+      const blob = new Blob([res.data])
+      let url = window.URL.createObjectURL(blob)
+
+      //创建一个a标签元素，设置下载属性，点击下载，最后移除该元素
+      let link = document.createElement('a')
+      link.href = url
+      link.style.display = 'none'
+      //res.headers.fileName 取出后台返回下载的文件名
+      const downlaodFileName =name
+      console.log(res.headers)
+      link.setAttribute('download',downlaodFileName)
+      link.click()
+      window.URL.revokeObjectURL(url)
+    })
         .catch(error => {
           console.log(error);
         });
+    },
+    tohk(){
+       this.$router.push({ path: "/hktable" });
     }
   }
 };

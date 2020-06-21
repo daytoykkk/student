@@ -34,7 +34,7 @@ const routes = [
   {
     path: '/home',
     component: Home,
-    redirect: '/sche',
+    redirect: '/homework',
     children: [
       {
         path: '/sche',
@@ -72,7 +72,7 @@ const routes = [
   {
     path: '/coursemsg',
     component: Coursemsg,
-    redirect:'res',
+    redirect:'/test',
     children:[
       {
         path: '/res',

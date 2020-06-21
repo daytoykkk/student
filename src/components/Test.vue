@@ -49,8 +49,11 @@ export default {
     },
     toHkmsg(index) {
       let that=this;
-      localStorage.setItem("hkMsg", JSON.stringify(that.tableData[index]));
-      this.$router.push({ path: "/hkmsg" });
+      localStorage.setItem("hkmsgS", JSON.stringify(that.tableData[index]));
+     
+      setTimeout(function(){
+        that.$router.push({ path: "/hkmsg" });
+      },500)
     }
   }
 };

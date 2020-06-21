@@ -18,7 +18,7 @@
         </p>
       </div>
 
-      <div class="class-box">
+      <div class="class-box" @click="toChat()">
         <img src="../assets/group.png" style="cursor: pointer;width:2em;height:2em;margin-top:5em;" />
         <p>进入群聊</p>
       </div>
@@ -35,6 +35,12 @@
             <p>教师姓名：{{teachername}}</p>
           </center>
         </el-card>
+         <img
+        src="../assets/back.png"
+        @click="tohk()"
+        style="float:left;margin-left:8%;width:2em;padding-right:5px;cursor:pointer;"
+        title="返回作业列表"
+      />
       </div>
       <!--右边部分-->
       <div class="right-box">
@@ -42,7 +48,7 @@
           <el-menu default-active="/test" class="el-menu-demo" mode="horizontal" router>
             <el-menu-item index="/res">课程资源</el-menu-item>
             <el-menu-item index="/test">作业考试</el-menu-item>
-            <el-menu-item index="/video">直播间</el-menu-item>
+            <el-menu-item index="/video">群聊</el-menu-item>
             <el-menu-item index="/qanda">问答区</el-menu-item>
           </el-menu>
         </div>
@@ -70,9 +76,6 @@ export default {
     this.getCourseMsg();
   },
   methods: {
-    toVideo() {
-      this.$router.push({ path: "/video" });
-    },
     getCourseMsg() {
       let that = this;
       let coursename = localStorage.getItem("HomeWorkK");
@@ -109,7 +112,9 @@ export default {
                 oldDate.getDate(),
                 tag:data[i].pK,
                 score:data[i].pT,
-                more:""
+                more:"",
+                comment:data[i].pneiron,
+                teachername:data[i].teacherName
             };
             that.homeworks.push(hk);
           }
@@ -133,6 +138,12 @@ export default {
         });
 
       
+    },
+    toChat(){
+      this.$router.push({ path: "/video" });
+    },
+    tohk(){
+      this.$router.push({ path: "/course" });
     }
   }
 };

@@ -23,7 +23,8 @@ export default {
    methods:{
     toCoursemsg(index){
       localStorage.setItem("courseId",this.courses[index].courseId);
-      localStorage.setItem("HomeWorkK",this.courses[index].coursename)
+      localStorage.setItem("HomeWorkK",this.courses[index].coursename);
+      localStorage.setItem("courseUrl",this.courses[index].url);
       this.$router.push({path:'/teachercourse'});
     },
      getMsg() {
