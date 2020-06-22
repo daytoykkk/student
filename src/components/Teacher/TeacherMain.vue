@@ -36,9 +36,11 @@ export default {
       this.$axios
         .get("/consumer/getTeacher")
         .then(res => {
+          console.log(res.data)
           let data = res.data;
           this.tx_url = "http://111.230.173.74:7001/consumer/showEInvoiceT/";
           this.username = data.TeacherName;
+          localStorage.setItem("id",data.TeacherId)
         })
         .catch(error => {
           console.log(error);

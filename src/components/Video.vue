@@ -12,18 +12,17 @@
           <div class="left-tx">
             <img :src="i.user_icon" />
           </div>
-          <div class="left-msg" >
+          <div class="left-msg">
             <p style="margin-bottom:-0.1em;">{{i.user_name}}</p>
             <div class="lll">{{i.msg}}</div>
           </div>
-         
         </div>
 
         <!--右边-->
         <div class="user-msg-right" v-else>
           <div class="right-msg">
-            <p style="margin-bottom:-0.1em;float:right;margin-right:1em;">{{i.user_name}}</p>
-            <br />
+            <p style="margin-bottom:-0.1em;float:right;margin-right:0.5em;">{{i.user_name}}</p>
+           <br>
             <div class="rrr">{{i.msg}}</div>
           </div>
 
@@ -35,7 +34,7 @@
     </div>
 
     <!--发送框-->
-    <div id="chatSend">
+    <div id="chatSend" style="border-top:1px solid cadetblue;">
       <div id="fasong">
         <textarea
           style="position:relative;z-index:100;width:98%"
@@ -67,11 +66,10 @@
   border-bottom: 1px solid cadetblue;
 }
 #chatShow {
-  width: 80%;
-  margin-left: 10%;
   height: 29em;
-  border-bottom: 1px solid cadetblue;
   overflow-y: auto;
+  padding-left: 2em;
+  padding-right: 2em;
 }
 .left-tx {
   align-content: center;
@@ -87,6 +85,7 @@
 }
 .left-msg {
   padding: 0.5em;
+  margin-top: -1.5em;
 }
 .left-img {
   background-color: rgb(238, 238, 238);
@@ -100,11 +99,29 @@
 }
 .right-msg {
   padding: 0.5em;
+  margin-top: -1.5em;
 }
 .rrr {
+  float:right;
   color: white;
   font-size: 1.2em;
   background-color: #2683f5;
+  border: none;
+  resize: none;
+  border-radius: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  word-wrap: break-word;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-size: 1.2em;
+  max-width: 20em;
+}
+.lll {
+  font-size: 1.2em;
+  background-color: rgb(238, 238, 238);
   border: none;
   resize: none;
   border-radius: 0.5em;
@@ -163,7 +180,7 @@ export default {
   data() {
     return {
       ws: null,
-      userId: "1",
+      userId: "",
       list: [],
       contentText: "",
       job: ""
@@ -177,6 +194,7 @@ export default {
   methods: {
     getUserMsg() {
       this.job = sessionStorage.getItem("LoginJob");
+      this.userId = localStorage.getItem("id");
     },
     scrollBottom() {
       let el = this.$refs["chatShow"];
@@ -277,7 +295,7 @@ export default {
       };
       ws.onmessage = function(e) {
         let res = eval("(" + e.data + ")");
-        console.log(res)
+        console.log(res);
         _this.list.push({
           user_icon: res.user_icon,
           msg: res.msg,
@@ -298,44 +316,46 @@ export default {
           console.log(res.data);
           let Msg = new Object();
           Msg = res.data.Liao;
+          console.log(Msg);
           let len = Msg.length;
           for (let i = 0; i < len; i++) {
             let form = new FormData();
-            form.append("id", Msg[i].LiaoP);
-            if (Msg[i].LiaoT == "T") {
+            form.append("Id", Msg[i].liaoP);
+
+            if (Msg[i].liaoT == "T") {
               this.$axios
-                .get("/consumer/getTeacherL/", form, {
+                .post("/consumer/getTeacherL/", form, {
                   "Content-Type": "application/x-www-form-urlencoded"
                 })
                 .then(res => {
-                  let xinxi = new Object()
-                  xinxi = res.data.T;
+                  let xinxi = new Object();
+                  xinxi = res.data.TeacherName;
                   that.list.push({
                     user_icon:
                       "http://111.230.173.74:7001/consumer/showEInvoiceP" +
                       "?Name=" +
                       xinxi.teacherFace,
-                    msg: Msg[i].LiaoN,
+                    msg: Msg[i].liaoN,
                     user_name: xinxi.teacherName,
-                    user_id: res.LiaoP
+                    user_id: res.liaoP
                   });
                 });
             } else {
               this.$axios
-                .get("/consumer/getStudentL/", form, {
+                .post("/consumer/getStudentL/", form, {
                   "Content-Type": "application/x-www-form-urlencoded"
                 })
                 .then(res => {
                   let xinxi = new Object();
-                  xinxi = res.data.S;
+                  xinxi = res.data.StudentName;
                   that.list.push({
                     user_icon:
                       "http://111.230.173.74:7001/consumer/showEInvoiceP" +
                       "?Name=" +
                       xinxi.studentFace,
-                    msg: Msg[i].LiaoN,
+                    msg: Msg[i].liaoN,
                     user_name: xinxi.studentName,
-                    user_id: res.LiaoP
+                    user_id: xinxi.studentId
                   });
                 });
             }
@@ -347,7 +367,7 @@ export default {
 
       setTimeout(() => {
         this.scrollBottom();
-      }, 500);
+      }, 300);
     }
   }
 };

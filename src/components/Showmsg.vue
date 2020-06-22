@@ -32,7 +32,9 @@
 </template>
 
 <script>
+import Msg from './Msg.js' ;
 export default {
+  inject: ["reload"],
   data() {
     return {
       username: "",
@@ -46,6 +48,20 @@ export default {
   mounted(){
       this.getMsg();
   },
+  watch:{ 
+    username(val){
+      let that=this;
+     Msg.$on("name",function(name){
+        that.username=name
+     })
+    },
+    slogan(val){
+       let that=this;
+     Msg.$on("slogan",function(slogan){
+        that.slogan=slogan
+     })
+    }
+  },
   methods:{
     getMsg(){
       //this.txurl=localStorage.getItem("txurl");
@@ -55,6 +71,7 @@ export default {
             let data = res.data;
             this.username = data.StudentName;
             this.slogan = data.StudentSign;
+            localStorage.setItem("id",data.StudentId)
           })
           .catch(error => {
             console.log(error);

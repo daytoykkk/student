@@ -1,32 +1,36 @@
 <template>
   <div>
     <!--作业详情-->
-     <div>
-       <img
+    <div>
+      <img
         src="../assets/back.png"
         @click="tohk()"
         style="float:left;margin-left:8%;width:2em;padding-right:5px;cursor:pointer;"
         title="返回作业列表"
       />
-    <el-card class="box-card">
-      <div slot="header" class="clearfix main-title">
-        <div class="hk-title">
-          <span>{{hkname}}</span>
-          <p class="p-ddl">
-            <i class="el-icon-time"></i>
-            截止时间: {{ddl}}
-          </p>
+      <el-card class="box-card">
+        <div slot="header" class="clearfix main-title">
+          <div class="hk-title">
+            <span>{{hkname}}</span>
+            <p class="p-ddl">
+              <i class="el-icon-time"></i>
+              截止时间: {{ddl}}
+            </p>
+          </div>
+          <el-button
+            type="primary"
+            icon="el-icon-edit"
+            :disabled="isSubmit"
+            @click="toSubmithk()"
+          >提交作业</el-button>
         </div>
-        <el-button
-          type="primary"
-          icon="el-icon-edit"
-          :disabled="isSubmit"
-          @click="toSubmithk()"
-        >提交作业</el-button>
-      </div>
-      <div class="text item">{{hkdata}}</div>
-    </el-card>
-     </div>
+        <div class="text item">作业描述：{{hkdata}}</div>
+        <div class="item">
+          作业文件：
+          <el-button style="margin-left:0" @click="download(teacherFileName)" title="点击下载" type="text">{{teacherFileName}}</el-button>
+        </div>
+      </el-card>
+    </div>
 
     <!--提交情况-->
     <el-card class="box-card">
@@ -36,9 +40,9 @@
         <el-table-column prop="ddl" label="提交时间" width="150"></el-table-column>
         <el-table-column
           prop="tag"
-          label="提交状态"
+          label="批改状态"
           width="180"
-          :filters="[{ text: '已提交', value: '已提交' }, { text: '未提交', value: '未提交' }]"
+          :filters="[{ text: '已批改', value: '已批改' }, { text: '未批改', value: '未批改' }]"
           :filter-method="filterTag"
           filter-placement="bottom-end"
         >
@@ -66,11 +70,14 @@
     <!--作业答案-->
     <el-card v-if="isSubmit==true" class="box-card">
       <div slot="header" class="clearfix">
-        <span>作业答案</span>
-        <el-button style="float: right; padding: 3px 0" type="text">点击下载文件</el-button>
+        <span>教师评语</span>
       </div>
       <div>
-        <p>{{filename}}</p>
+        <p>
+          我的分数：
+          <span style="color:red">{{score}}</span>
+        </p>
+        <p>教师评语: {{comment}}</p>
       </div>
     </el-card>
   </div>
@@ -85,7 +92,10 @@ export default {
       ddl: "",
       hkname: "",
       hks: [],
-      filename: ""
+      filename: "",
+      score: "",
+      comment: "",
+      teacherFileName: ""
     };
   },
   mounted() {
@@ -96,6 +106,7 @@ export default {
       let that = this;
       let homework = JSON.parse(localStorage.getItem("hkmsgS"));
       that.ddl = homework.ddl;
+      that.teacherFileName=homework.pI
       let dateline = new Date(that.ddl);
       let today = new Date();
 
@@ -115,7 +126,8 @@ export default {
           let len = data.length;
           if (len == 0) {
             that.isSubmit = false;
-            if (today > dateline) {   //过期不能交
+            if (today > dateline) {
+              //过期不能交
               that.isSubmit = true;
             }
             return;
@@ -126,7 +138,7 @@ export default {
           for (let i = 0; i < len; i++) {
             let oldDate = new Date(data[i].homeWorkTime);
             let hk = {
-              tag: data[i].homeWorkP,
+              tag: data[i].homePL == "无" ? "未批改" : "已批改",
               ddl:
                 oldDate.getFullYear() +
                 "-" +
@@ -135,6 +147,8 @@ export default {
                 oldDate.getDate(),
               filename: data[i].homeWorkI
             };
+            that.score = data[i].homeWorkP;
+            that.comment = data[i].homePL;
             that.hks.push(hk);
           }
         })
@@ -155,30 +169,30 @@ export default {
       that.$axios
         .post("/consumer/downFile/", form, {
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          responseType: 'blob'
+          responseType: "blob"
         })
-       .then(res=>{
-         console.log(res.data)
-      const blob = new Blob([res.data])
-      let url = window.URL.createObjectURL(blob)
+        .then(res => {
+          console.log(res.data);
+          const blob = new Blob([res.data]);
+          let url = window.URL.createObjectURL(blob);
 
-      //创建一个a标签元素，设置下载属性，点击下载，最后移除该元素
-      let link = document.createElement('a')
-      link.href = url
-      link.style.display = 'none'
-      //res.headers.fileName 取出后台返回下载的文件名
-      const downlaodFileName =name
-      console.log(res.headers)
-      link.setAttribute('download',downlaodFileName)
-      link.click()
-      window.URL.revokeObjectURL(url)
-    })
+          //创建一个a标签元素，设置下载属性，点击下载，最后移除该元素
+          let link = document.createElement("a");
+          link.href = url;
+          link.style.display = "none";
+          //res.headers.fileName 取出后台返回下载的文件名
+          const downlaodFileName = name;
+          console.log(res.headers);
+          link.setAttribute("download", downlaodFileName);
+          link.click();
+          window.URL.revokeObjectURL(url);
+        })
         .catch(error => {
           console.log(error);
         });
     },
-    tohk(){
-       this.$router.push({ path: "/hktable" });
+    tohk() {
+      this.$router.push({ path: "/hktable" });
     }
   }
 };

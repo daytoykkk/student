@@ -9,15 +9,15 @@
             <el-table-column prop="ddl" label="截止时间" width="150" sortable></el-table-column>
             <el-table-column
               prop="tag"
-              label="提交状态"
+              label="批改状态"
               width="180"
-              :filters="[{ text: '已提交', value: '已提交' }, { text: '未提交', value: '未提交' }]"
+              :filters="[{ text: '已批改', value: '已批改' }, { text: '未批改', value: '未批改' }]"
               :filter-method="filterTag"
               filter-placement="bottom-end"
             >
               <template slot-scope="scope">
                 <el-tag
-                  :type="scope.row.tag === '未提交' ? 'danger' : 'success'"
+                  :type="scope.row.tag === '未批改' ? 'danger' : 'success'"
                   disable-transitions
                 >{{scope.row.tag}}</el-tag>
               </template>
@@ -70,9 +70,10 @@ export default {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
               })
               .then(res => {
-                console.log(res.data.AllHomeWork2)
+                let teachername=res.data.Teacher2.teacherName
                 let data = new Object();
                 data = res.data.AllHomeWork2;
+                console.log(data)
                 let len = data.length;
                 for (let i = 0; i < len; i++) {
                   let oldDate = new Date(data[i].pTime);
@@ -84,11 +85,13 @@ export default {
                       (oldDate.getMonth() + 1) +
                       "-" +
                       oldDate.getDate(),
-                    tag: data[i].pK,
+                    tag: data[i].pT=="1"?"未批改":"已批改",
                     score: data[i].pT,
                     more: "",
                     comment:data[i].pneiron,
-                    teachername:data[i].teacherName
+                    teachername:teachername,
+                    coursename:data[i].pK,
+                    pI:data[i].pI
                   };
                   that.tableData.push(hk);
                 }

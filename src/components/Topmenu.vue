@@ -536,6 +536,7 @@ export default {
       this.$axios
         .post("/consumer/LoginTeacher/", form, config)
         .then(res => {
+        console.log(res.data)
           if (res.data == "OK") {
             that.$message({
               type: "success",

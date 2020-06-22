@@ -6,15 +6,15 @@
       <el-table-column prop="ddl" label="截止时间" width="150" sortable></el-table-column>
       <el-table-column
         prop="tag"
-        label="提交状态"
+        label="批改状态"
         width="180"
-        :filters="[{ text: '已提交', value: '已提交' }, { text: '未提交', value: '未提交' }]"
+        :filters="[{ text: '已批改', value: '已批改' }, { text: '未批改', value: '未批改' }]"
         :filter-method="filterTag"
         filter-placement="bottom-end"
       >
         <template slot-scope="scope">
           <el-tag
-            :type="scope.row.tag === '未提交' ? 'danger' : 'success'"
+            :type="scope.row.tag === '未批改' ? 'danger' : 'success'"
             disable-transitions
           >{{scope.row.tag}}</el-tag>
         </template>

@@ -39,6 +39,7 @@ export default {
     toHomeWork(data) {
       localStorage.setItem("HomeWorkName",data.title);
       localStorage.setItem("HomeWorkK",data.courseName);
+      localStorage.setItem("pI",data.pI)
       this.$router.push({ path: "/teacherhkmsg" });
     },
     getMsg() {
@@ -70,7 +71,8 @@ export default {
               finishNumber: data[i].pT,
               Id: data[i].pId,
               courseName: data[i].pK,
-              homeId:data[i].pId
+              homeId:data[i].pId,
+              pI:data[i].pI
             };
             that.homework.push(hk);
           }

@@ -221,6 +221,7 @@
 </template>
 
 <script>
+import Msg from './Msg.js' ;
 export default {
   data() {
     var reCount = 1;
@@ -354,12 +355,10 @@ export default {
   methods: {
     getMsg() {
       //获取个人信息
-      let isLogin = localStorage.getItem("isLogin");
-      if (isLogin == "true") {
         this.$axios
           .get("/consumer/getStudent")
           .then(res => {
-            let data = res.data;
+            let data=res.data
             this.ruleForm.name = data.StudentName;
             this.ruleForm.sign = data.StudentSign;
             this.ruleForm.email = data.StudentEmail;
@@ -371,9 +370,6 @@ export default {
           .catch(error => {
             console.log(error);
           });
-      } else {
-        return;
-      }
     },
     handleClose() {
       this.dialogVisible = false;
@@ -550,6 +546,9 @@ export default {
             message: msg + "修改成功！",
             type: "success"
           });
+
+          Msg.$emit("name",that.ruleForm.name)
+          Msg.$emit("slogan",that.ruleForm.sign)
         })
         .catch(function(error) {
           console.log(error);

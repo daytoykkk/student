@@ -38,7 +38,7 @@
          <img
         src="../assets/back.png"
         @click="tohk()"
-        style="float:left;margin-left:8%;width:2em;padding-right:5px;cursor:pointer;"
+        style="float:left;margin-top:1em;margin-left:10%;width:2em;padding-right:5px;cursor:pointer;"
         title="返回作业列表"
       />
       </div>
@@ -110,7 +110,7 @@ export default {
                 (oldDate.getMonth() + 1) +
                 "-" +
                 oldDate.getDate(),
-                tag:data[i].pK,
+                tag:data[i].pT=="1"?"未批改":"已批改",
                 score:data[i].pT,
                 more:"",
                 comment:data[i].pneiron,

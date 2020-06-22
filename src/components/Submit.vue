@@ -4,7 +4,8 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix main-title">
         <div class="hk-title">
-          <span>{{name}}}</span>
+          <span>{{name}}</span>
+           <span style="font-size:1em;color:#c9c9cb"> {{coursename}}</span>
           <p class="p-ddl">
             <i class="el-icon-time"></i>
             截止时间: {{ddl}}
@@ -74,8 +75,12 @@ export default {
       time: "",
       string: "123",
       files: [],
-      response: ""
+      response: "",
+      coursename:""
     };
+  },
+  mounted(){
+this.getMsg()
   },
   methods: {
     getMsg(){
@@ -83,7 +88,8 @@ export default {
          this.ddl=homework.ddl;
          this.name=homework.name;
          this.hkdata=homework.comment;
-         that.teachername=homework.teachername;
+         this.teachername=homework.teachername;
+          this.coursename=homework.coursename
     },
     fileChange(file, fileList) {
       let that = this;
@@ -112,8 +118,8 @@ export default {
 
       form.append("time", date);
       form.append("TeacherName", that.teachername);
-      form.append("HomeWorkName", that.HomeWorkName);
-      form.append("HomeWorkK", that.HomeWorkK);
+      form.append("HomeWorkName", that.name);
+      form.append("HomeWorkK", that.coursename);
       let config = {
         headers: { "Content-Type": "application/x-www-form-urlencoded" }
       };

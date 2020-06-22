@@ -20,6 +20,10 @@
           <el-button type="primary" icon="el-icon-edit">上传答案</el-button>
         </div>
         <div class="text item">{{hkdata}}</div>
+         <div class="item">
+          作业文件：
+          <el-button style="margin-left:0" @click="downFile(teacherFileName)" title="点击下载" type="text">{{teacherFileName}}</el-button>
+        </div>
       </el-card>
     </div>
 
@@ -82,7 +86,8 @@ export default {
       hkdata: "",
       ddl: "",
       coursename: "",
-      tableData: []
+      tableData: [],
+      teacherFileName: ""
     };
   },
   mounted() {
@@ -93,6 +98,7 @@ export default {
       let that = this;
       let hkname = localStorage.getItem("HomeWorkName");
       let coursename = localStorage.getItem("HomeWorkK");
+      that.teacherFileName=localStorage.getItem("pI")
       let config = {
         headers: { "Content-Type": "application/x-www-form-urlencoded" }
       };

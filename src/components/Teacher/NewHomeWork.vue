@@ -153,6 +153,8 @@ export default {
               type: "success",
               message: "发布成功！"
             });
+            localStorage.setItem("HomeWorkName",that.title)
+            localStorage.setItem("HomeWorkK",that.courseName)
             that.$router.push({ path: "/teacherhkmsg" });
           }
         })
