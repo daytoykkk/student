@@ -176,11 +176,10 @@ export default {
           const blob = new Blob([res.data]);
           let url = window.URL.createObjectURL(blob);
 
-          //创建一个a标签元素，设置下载属性，点击下载，最后移除该元素
           let link = document.createElement("a");
           link.href = url;
           link.style.display = "none";
-          //res.headers.fileName 取出后台返回下载的文件名
+         
           const downlaodFileName = name;
           console.log(res.headers);
           link.setAttribute("download", downlaodFileName);

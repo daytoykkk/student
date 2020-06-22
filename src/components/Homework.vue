@@ -73,9 +73,11 @@ export default {
                 let teachername=res.data.Teacher2.teacherName
                 let data = new Object();
                 data = res.data.AllHomeWork2;
-                console.log(data)
+
                 let len = data.length;
+                
                 for (let i = 0; i < len; i++) {
+                
                   let oldDate = new Date(data[i].pTime);
                   let hk = {
                     name: data[i].pL,
@@ -85,7 +87,7 @@ export default {
                       (oldDate.getMonth() + 1) +
                       "-" +
                       oldDate.getDate(),
-                    tag: data[i].pT=="1"?"未批改":"已批改",
+                    tag: data[i].pT==1?"未批改":"已批改",
                     score: data[i].pT,
                     more: "",
                     comment:data[i].pneiron,
@@ -123,6 +125,7 @@ export default {
           headers: { "Content-Type": "application/x-www-form-urlencoded" }
         })
         .then(res => {
+           let teachername=res.data.Teacher2.teacherName
           console.log(res.data);
           let data = new Object();
 
@@ -132,15 +135,19 @@ export default {
             let oldDate = new Date(data[i].pTime);
             let hk = {
               name: data[i].pL,
-              ddl:
-                oldDate.getFullYear() +
-                "-" +
-                (oldDate.getMonth() + 1) +
-                "-" +
-                oldDate.getDate(),
-              tag: data[i].pK,
-              score: data[i].pT,
-              more: ""
+                    ddl:
+                      oldDate.getFullYear() +
+                      "-" +
+                      (oldDate.getMonth() + 1) +
+                      "-" +
+                      oldDate.getDate(),
+                    tag: data[i].pT==1?"未批改":"已批改",
+                    score: data[i].pT,
+                    more: "",
+                    comment:data[i].pneiron,
+                    teachername:teachername,
+                    coursename:data[i].pK,
+                    pI:data[i].pI
             };
             that.tableData.push(hk);
           }

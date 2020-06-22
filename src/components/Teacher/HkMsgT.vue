@@ -19,7 +19,7 @@
           </div>
           <el-button type="primary" icon="el-icon-edit">上传答案</el-button>
         </div>
-        <div class="text item">{{hkdata}}</div>
+        <div class="text item">作业描述：{{hkdata}}</div>
          <div class="item">
           作业文件：
           <el-button style="margin-left:0" @click="downFile(teacherFileName)" title="点击下载" type="text">{{teacherFileName}}</el-button>
@@ -147,7 +147,7 @@ export default {
               (oldDate.getMonth() + 1) +
               "-" +
               oldDate.getDate();
-              if(data[i].homePL=="无"&&data[i].homeWorkP=="0"){
+              if(data[i].homePL=="无"){
                     pigai="未批改"
               }else{
                 pigai="已批改"

@@ -133,6 +133,7 @@ this.getMsg()
               type: "success",
               message: "提交成功！"
             });
+             this.$router.push({ path: "/hkmsg" });
           }
         })
         .catch(error => {
@@ -166,6 +167,7 @@ this.getMsg()
               type: "success",
               message: "提交成功！"
             });
+             this.$router.push({ path: "/hkmsg" });
           }
         })
         .catch(error => {

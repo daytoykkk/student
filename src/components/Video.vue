@@ -50,6 +50,9 @@
       <a href="#" @click="sendText();">
         <img src="../assets/send.png" style="margin-top:10%;width:1.2em;height:1.2em;" />
       </a>
+      <a href="#" @click="tolast();">
+        <img src="../assets/tuichu.png" style="margin-top:10%;width:1.2em;height:1.2em;" />
+      </a>
     </div>
   </div>
 </template>
@@ -337,7 +340,7 @@ export default {
                       xinxi.teacherFace,
                     msg: Msg[i].liaoN,
                     user_name: xinxi.teacherName,
-                    user_id: res.liaoP
+                    user_id: xinxi.teacherId
                   });
                 });
             } else {
@@ -368,6 +371,9 @@ export default {
       setTimeout(() => {
         this.scrollBottom();
       }, 300);
+    },
+    tolast(){
+      history.back(-1);
     }
   }
 };

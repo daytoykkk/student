@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="main">
-      <h2>高等数学</h2>
+      <h2>{{courseName}}</h2>
       <hr style="color:rgba(100, 110, 245, 0.541)" />
       <label style="margin-left:2em">标题：</label>
       <el-input
@@ -103,9 +103,12 @@ export default {
       text: "",
       string: "1",
       files: [],
-      courseName: "高等数学",
+      courseName: "",
       response: ""
     };
+  },
+  mounted(){
+    this.courseName=localStorage.getItem("HomeWorkK")
   },
   methods: {
     back() {
@@ -137,6 +140,7 @@ export default {
           name += that.files[i].name + ";";
         }
         form.append("PI", name);
+         
       }
 
       let config = {
@@ -155,6 +159,7 @@ export default {
             });
             localStorage.setItem("HomeWorkName",that.title)
             localStorage.setItem("HomeWorkK",that.courseName)
+            localStorage.setItem("pI", that.files[0].name)
             that.$router.push({ path: "/teacherhkmsg" });
           }
         })
@@ -190,6 +195,9 @@ export default {
               type: "success",
               message: "发布成功！"
             });
+             localStorage.setItem("HomeWorkName",that.title)
+            localStorage.setItem("HomeWorkK",that.courseName)
+            localStorage.setItem("pI", that.files[0].name)
             that.$router.push({ path: "/teacherhkmsg" });
           }
         })
